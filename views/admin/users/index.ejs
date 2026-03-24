@@ -1,0 +1,20 @@
+<div class="adm-hd">
+  <div class="adm-hd-l">
+    <h2>Customers</h2>
+    <p>List of registered users.</p>
+  </div>
+</div>
+
+<div class="adm-card">
+  <div class="adm-card-hd">
+    <span class="adm-card-title">Users</span>
+  </div>
+  <% users.forEach(u => { %>
+    <div class="order-row">
+      <span class="ord-id">#<%= u.id %></span>
+      <span class="ord-name"><%= u.name %> (<%= u.email %>)</span>
+      <span class="ord-amt"><%= u.role %></span>
+    </div>
+  <% }) %>
+</div>
+

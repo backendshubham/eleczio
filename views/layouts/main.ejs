@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title><%= title || 'GiftHouse' %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <% const current = typeof active !== 'undefined' ? active : '' %>
+    <nav class="nav">
+      <div class="logo">
+        <a href="/">Gift<em>House</em></a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="/" class="<%= (current === 'home') ? 'hi' : '' %>">Home</a></li>
+        <li><a href="/products" class="<%= (current === 'products') ? 'hi' : '' %>">Shop</a></li>
+        <li><a href="/build-hamper" class="<%= (current === 'build') ? 'hi' : '' %>">Build a Hamper</a></li>
+      </ul>
+      <div class="nav-r">
+        <a class="nav-btn" href="/cart">🛒</a>
+        <% if (user) { %>
+          <form action="/auth/logout" method="post">
+            <button class="nav-cta" type="submit">Logout</button>
+          </form>
+        <% } else { %>
+          <a href="/auth/login" class="nav-cta">Sign In</a>
+        <% } %>
+      </div>
+    </nav>
+
+    <main class="page">
+      <%- body %>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-top">
+        <div>
+          <div class="f-brand">Gift<em>House</em></div>
+          <div class="f-desc">
+            Premium curated gift boxes and bespoke hampers, crafted with love and delivered across India.
+            Making every occasion unforgettable.
+          </div>
+          <div class="f-socials">
+            <div class="f-soc">📸</div>
+            <div class="f-soc">🐦</div>
+            <div class="f-soc">📌</div>
+            <div class="f-soc">💼</div>
+          </div>
+        </div>
+        <div>
+          <div class="f-col-title">Shop</div>
+          <div class="f-links">
+            <a href="/products">Gift Boxes</a>
+            <a href="/products">Luxury Hampers</a>
+            <a href="/build-hamper">Build a Box</a>
+            <a href="/products">New Arrivals</a>
+          </div>
+        </div>
+        <div>
+          <div class="f-col-title">Occasions</div>
+          <div class="f-links">
+            <a href="/products">Birthday</a>
+            <a href="/products">Anniversary</a>
+            <a href="/products">Wedding</a>
+            <a href="/products">Corporate</a>
+          </div>
+        </div>
+        <div>
+          <div class="f-col-title">Help</div>
+          <div class="f-links">
+            <a href="/cart">Cart</a>
+            <a href="/checkout">Checkout</a>
+            <a href="/auth/login">Sign In</a>
+          </div>
+        </div>
+      </div>
+      <div class="f-bottom">
+        <span>© <%= new Date().getFullYear() %> GiftHouse. All rights reserved.</span>
+        <span>Made with love in India 🇮🇳</span>
+      </div>
+    </footer>
+  </body>
+</html>
+

@@ -1,0 +1,36 @@
+<div class="adm-hd">
+  <div class="adm-hd-l">
+    <h2>Orders</h2>
+    <p>View and manage recent orders, including custom hampers.</p>
+  </div>
+</div>
+
+<div class="adm-card">
+  <div class="adm-card-hd">
+    <span class="adm-card-title">Recent Orders</span>
+  </div>
+  <% if (!orders.length) { %>
+    <p style="font-size:13px;color:var(--muted);">No orders yet.</p>
+  <% } else { %>
+    <% orders.forEach(o => { %>
+      <div class="order-row">
+        <span class="ord-id">#<%= o.order_number %></span>
+        <span class="ord-name"><%= o.customer_name %></span>
+        <span class="ord-amt">₹<%= o.total %></span>
+        <% if (o.payment_status) { %>
+          <span class="sbadge <%= o.payment_status === 'paid' ? 'sb-ship' : (o.payment_status === 'pending' ? 'sb-pend' : 'sb-proc') %>">
+            <%= o.payment_status %>
+          </span>
+        <% } %>
+        <span class="sbadge
+          <% if (o.status === 'pending') { %>sb-pend<% } %>
+          <% if (o.status === 'processing') { %>sb-proc<% } %>
+          <% if (o.status === 'shipped') { %>sb-ship<% } %>
+          <% if (o.status === 'delivered') { %>sb-dlvd<% } %>
+        "><%= o.status %></span>
+        <a href="/admin/orders/<%= o.id %>" style="margin-left:auto;font-size:12px;color:var(--accent);">View →</a>
+      </div>
+    <% }) %>
+  <% } %>
+</div>
+

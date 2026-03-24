@@ -1,0 +1,53 @@
+<div class="topbar">
+  <h1 style="margin:0">Team / contacts</h1>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0">Naya member</h3>
+  <form method="post" action="/admin/members">
+    <div class="field"><label>Name</label><input name="name" required /></div>
+    <div class="row">
+      <div class="field"><label>Role English</label><input name="role_en" required /></div>
+      <div class="field"><label>Role Hinglish</label><input name="role_hi" required /></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>Phone</label><input name="phone" required /></div>
+      <div class="field"><label>Display phone</label><input name="phone_display" /></div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label>Icon</label>
+        <select name="icon_variant">
+          <option value="elec">Electrical</option>
+          <option value="eltr">Electronics</option>
+        </select>
+      </div>
+      <div class="field"><label>Sort</label><input type="number" name="sort_order" value="0" /></div>
+    </div>
+    <button type="submit" class="btn">Add</button>
+  </form>
+</div>
+
+<div class="card">
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th>Sort</th><th>Name</th><th>Role (EN)</th><th>Phone</th><th></th></tr></thead>
+    <tbody>
+      <% members.forEach(m => { %>
+      <tr>
+        <td><%= m.sort_order %></td>
+        <td><%= m.name %></td>
+        <td><%= m.role && m.role.en ? m.role.en : '' %></td>
+        <td><%= m.phone_display || m.phone %></td>
+        <td>
+          <a href="/admin/members/<%= m._id %>/edit">Edit</a>
+          <form method="post" action="/admin/members/<%= m._id %>/delete" style="display:inline;margin-left:8px" data-confirm="Remove this team member permanently?">
+            <button type="submit" class="btn btn-ghost" style="padding:4px 10px;font-size:0.8rem">Delete</button>
+          </form>
+        </td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+  </div>
+</div>

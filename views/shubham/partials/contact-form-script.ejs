@@ -1,0 +1,151 @@
+<div class="toast toast--success" id="toast" role="status" aria-live="polite">
+  <i class="toast-icon fa-solid fa-circle-check" id="toast-icon" aria-hidden="true"></i>
+  <span class="toast-body" id="toast-text"></span>
+</div>
+<script>
+  const UI = <%- uiJson %>;
+  const toastEl = document.getElementById('toast');
+  const toastText = document.getElementById('toast-text');
+  const toastIcon = document.getElementById('toast-icon');
+  let toastTimer = null;
+
+  function showSiteToast(message, variant, durationMs) {
+    if (!toastEl || !toastText || !toastIcon) return;
+    if (toastTimer) clearTimeout(toastTimer);
+    toastEl.classList.remove('toast--success', 'toast--error', 'toast--warning', 'toast--info', 'show');
+    const v = variant || 'success';
+    toastEl.classList.add('toast--' + v);
+    const icons = {
+      success: 'fa-solid fa-circle-check',
+      error: 'fa-solid fa-circle-xmark',
+      warning: 'fa-solid fa-triangle-exclamation',
+      info: 'fa-solid fa-circle-info'
+    };
+    toastIcon.className = 'toast-icon ' + (icons[v] || icons.info);
+    toastText.textContent = message;
+    requestAnimationFrame(() => toastEl.classList.add('show'));
+    const ms = typeof durationMs === 'number' ? durationMs : (v === 'error' ? 5000 : 4000);
+    toastTimer = setTimeout(() => {
+      toastEl.classList.remove('show');
+      toastTimer = null;
+    }, ms);
+  }
+
+  const MAX_PHOTOS = 3;
+  const MAX_BYTES = 5 * 1024 * 1024;
+  const ALLOW_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+
+  let selectedFiles = [];
+  let previewUrls = [];
+
+  function revokeAllPreviews() {
+    previewUrls.forEach((u) => { try { URL.revokeObjectURL(u); } catch (e) {} });
+    previewUrls = [];
+  }
+
+  function renderPreviews() {
+    const box = document.getElementById('photo-previews');
+    if (!box) return;
+    revokeAllPreviews();
+    box.innerHTML = '';
+    selectedFiles.forEach((file, i) => {
+      const url = URL.createObjectURL(file);
+      previewUrls.push(url);
+      const wrap = document.createElement('div');
+      wrap.className = 'photo-preview-tile';
+      const img = document.createElement('img');
+      img.src = url;
+      img.alt = '';
+      const rm = document.createElement('button');
+      rm.type = 'button';
+      rm.className = 'photo-preview-remove';
+      rm.setAttribute('aria-label', 'Remove');
+      rm.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+      rm.addEventListener('click', () => {
+        selectedFiles.splice(i, 1);
+        renderPreviews();
+      });
+      wrap.appendChild(img);
+      wrap.appendChild(rm);
+      box.appendChild(wrap);
+    });
+  }
+
+  const fileInput = document.getElementById('f-images');
+  const pickBtn = document.getElementById('btn-pick-photos');
+  if (pickBtn && fileInput) {
+    pickBtn.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', () => {
+      const files = Array.from(fileInput.files || []);
+      fileInput.value = '';
+      for (const f of files) {
+        if (selectedFiles.length >= MAX_PHOTOS) {
+          showSiteToast(UI.alertMaxPhotos, 'warning');
+          break;
+        }
+        if (!ALLOW_TYPES.includes(f.type)) {
+          showSiteToast(UI.alertImageType, 'warning');
+          continue;
+        }
+        if (f.size > MAX_BYTES) {
+          showSiteToast(UI.alertImageSize, 'warning');
+          continue;
+        }
+        selectedFiles.push(f);
+      }
+      renderPreviews();
+    });
+  }
+
+  document.getElementById('btn-submit').addEventListener('click', async () => {
+    const name = document.getElementById('f-name').value.trim();
+    const phone = document.getElementById('f-phone').value.trim();
+    const address = document.getElementById('f-address').value.trim();
+    const problem = document.getElementById('f-problem').value.trim();
+    if (!name || !phone || !address || !problem) {
+      showSiteToast(UI.alertFillAll, 'error');
+      return;
+    }
+    if (phone.length !== 10 || !/^\d+$/.test(phone)) {
+      showSiteToast(UI.alertPhone, 'error');
+      return;
+    }
+    const fd = new FormData();
+    fd.append('name', name);
+    fd.append('phone', phone);
+    fd.append('address', address);
+    fd.append('problem', problem);
+    selectedFiles.forEach((f) => fd.append('images', f));
+
+    try {
+      const res = await fetch('/service-request', {
+        method: 'POST',
+        body: fd
+      });
+      let data;
+      try {
+        data = await res.json();
+      } catch (parseErr) {
+        showSiteToast(UI.alertNetwork, 'error');
+        return;
+      }
+      if (!data.ok) {
+        showSiteToast(data.error || 'Error', 'error', 5500);
+        return;
+      }
+      if (data.warnings && data.warnings.length) {
+        showSiteToast(UI.toastOk + '\n' + data.warnings[0], 'warning', 8000);
+      } else {
+        showSiteToast(UI.toastOk, 'success');
+      }
+      document.getElementById('f-name').value = '';
+      document.getElementById('f-phone').value = '';
+      document.getElementById('f-address').value = '';
+      document.getElementById('f-problem').value = '';
+      selectedFiles = [];
+      renderPreviews();
+    } catch (e) {
+      showSiteToast(UI.alertNetwork, 'error');
+    }
+  });
+</script>

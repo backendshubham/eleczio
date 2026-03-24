@@ -1,0 +1,132 @@
+<% var featured = services.slice(0, 3); %>
+<section id="home">
+  <div class="hero-video-wrap" aria-hidden="true">
+    <video class="hero-video" autoplay muted loop playsinline>
+      <source src="/videos/hero-background.mp4" type="video/mp4">
+    </video>
+    <div class="hero-video-overlay"></div>
+  </div>
+  <div class="hero-bg-glow">
+    <div class="glow-1"></div>
+    <div class="glow-2"></div>
+    <div class="grid-lines"></div>
+  </div>
+  <div class="hero-badge"><i class="fa-solid fa-star"></i> <%= t(settings.heroBadge) %></div>
+  <h1 class="hero-title">
+    <%= t(settings.heroTitleLine1) %><br/>
+    <span><%= t(settings.heroTitleHighlight) %></span><br/>
+    <%= t(settings.heroTitleLine2) %>
+  </h1>
+  <p class="hero-sub"><%= t(settings.heroSub) %></p>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num"><%= settings.statYears %></div>
+      <div class="stat-label"><%= t(settings.statYearsLabel) %></div>
+    </div>
+    <div class="stat">
+      <div class="stat-num"><%= settings.statVisitCharge %></div>
+      <div class="stat-label"><%= t(settings.statVisitLabel) %></div>
+    </div>
+    <div class="stat">
+      <div class="stat-num"><%= settings.statCustomers %></div>
+      <div class="stat-label"><%= t(settings.statCustomersLabel) %></div>
+    </div>
+  </div>
+  <div class="hero-btns">
+    <a href="tel:<%= settings.primaryTel %>" class="btn-primary"><i class="fa-solid fa-phone-volume"></i> <%= ui.callHero %></a>
+    <a href="/contact" class="btn-outline"><i class="fa-solid fa-clipboard-list"></i> <%= ui.bookService %></a>
+  </div>
+  <a href="/services" class="hero-scroll-hint" style="text-decoration:none;color:inherit;">
+    <i class="fa-solid fa-chevron-down"></i>
+    <%= lang === 'en' ? 'See all services' : 'Saari services dekhein' %>
+  </a>
+</section>
+
+<section class="home-quick section-light">
+  <div class="home-quick-inner">
+    <div class="home-quick-intro reveal">
+      <h2 class="section-title" style="margin-bottom:.5rem">
+        <%= lang === 'en' ? 'What we do' : 'Hum kya karte hain' %>
+      </h2>
+      <p class="section-sub" style="max-width:640px">
+        <% if (lang === 'en') { %>
+          Eleczio is your one-stop team for safe electrical work and reliable electronics repair in Khandwa. Browse each section for our story, full service menu, and the quickest way to book a visit.
+        <% } else { %>
+          Eleczio Khandwa me safe electrical kaam aur trusted electronics repair ke liye one-stop team hai. About me story, Services me poori list, Contact se jaldi visit book karein.
+        <% } %>
+      </p>
+    </div>
+    <div class="home-quick-grid">
+      <a href="/about" class="home-quick-card reveal">
+        <div class="home-quick-icon"><i class="fa-solid fa-people-group"></i></div>
+        <h3><%= ui.navAbout %></h3>
+        <p><%= lang === 'en' ? 'Who we are, how we work, and why families trust us for doorstep repairs.' : 'Hum kaun hain, kaise kaam karte hain, aur families doorstep repair ke liye kyun trust karti hain.' %></p>
+        <span class="home-quick-link"><%= lang === 'en' ? 'Read more' : 'Aur padhein' %> <i class="fa-solid fa-arrow-right"></i></span>
+      </a>
+      <a href="/services" class="home-quick-card reveal">
+        <div class="home-quick-icon"><i class="fa-solid fa-layer-group"></i></div>
+        <h3><%= ui.navServices %></h3>
+        <p><%= lang === 'en' ? 'Wiring, fans, TV, AC, fridge, pumps and more — each with its own detail page.' : 'Wiring, fan, TV, AC, fridge, pump aur bhi — har service ki alag detail page.' %></p>
+        <span class="home-quick-link"><%= lang === 'en' ? 'Browse services' : 'Services kholein' %> <i class="fa-solid fa-arrow-right"></i></span>
+      </a>
+      <a href="/contact" class="home-quick-card reveal">
+        <div class="home-quick-icon"><i class="fa-solid fa-paper-plane"></i></div>
+        <h3><%= ui.navContact %></h3>
+        <p><%= lang === 'en' ? 'Call, WhatsApp after you submit the form, or visit — we respond as fast as we can.' : 'Call, form ke baad WhatsApp, ya address — jitni jaldi ho reply.' %></p>
+        <span class="home-quick-link"><%= ui.bookService %> <i class="fa-solid fa-arrow-right"></i></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="home-featured" id="featured-services">
+  <div class="services-inner">
+    <div class="services-header reveal">
+      <div class="section-tag"><%= t(settings.servicesSectionTag) %></div>
+      <h2 class="section-title"><%= lang === 'en' ? 'Popular services' : 'Popular services' %></h2>
+      <p class="section-sub"><%= lang === 'en' ? 'Tap a card for the full page — scope, pricing philosophy, and how we help in Khandwa.' : 'Card dabayein — poori detail page scope, pricing idea aur Khandwa me help ka tareeka.' %></p>
+    </div>
+    <div class="services-grid">
+      <% featured.forEach(function(s) { %>
+      <div class="service-card reveal">
+        <div class="svc-icon"><i class="<%= s.iconClass %>"></i></div>
+        <div class="svc-title"><%= t(s.title) %></div>
+        <p class="svc-desc"><%= t(s.description) %></p>
+        <a href="/services/<%= s.slug %>" class="svc-link"><%= lang === 'en' ? 'Full details' : 'Poori detail' %> <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+      <% }); %>
+    </div>
+    <div style="text-align:center;margin-top:2rem" class="reveal">
+      <a href="/services" class="btn-primary" style="display:inline-flex"><%= lang === 'en' ? 'View all services' : 'Saari services' %> <i class="fa-solid fa-arrow-right" style="margin-left:8px"></i></a>
+    </div>
+  </div>
+</section>
+
+<div class="why-strip">
+  <div class="why-inner">
+    <div class="why-text reveal">
+      <h3><%= t(settings.whyTitle) %></h3>
+      <p><%= t(settings.whySub) %></p>
+    </div>
+    <div class="why-features reveal">
+      <% (settings.whyFeatures || []).slice(0, 6).forEach(function(f) { %>
+      <div class="why-feat"><i class="<%= f.icon || 'fa-solid fa-check-circle' %>"></i><span><%= t(f.text) %></span></div>
+      <% }); %>
+    </div>
+  </div>
+</div>
+
+<section class="section-light home-cta-bottom">
+  <div class="home-cta-inner reveal">
+    <h2 class="section-title" style="text-align:center;margin-bottom:.75rem">
+      <%= lang === 'en' ? 'Ready for a safe, tidy repair at your home?' : 'Ghar pe safe aur clean repair ke liye tayyar hain?' %>
+    </h2>
+    <p class="section-sub" style="margin:0 auto 1.5rem;text-align:center;max-width:520px">
+      <%= lang === 'en' ? 'Tell us the problem once — we’ll call or WhatsApp with the next steps. ₹200 visit charge, transparent spare-parts talk.' : 'Ek baar problem likhiye — hum call ya WhatsApp se next step batayenge. ₹200 visit charge, parts par clear baat.' %>
+    </p>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center">
+      <a href="/contact" class="btn-primary"><i class="fa-solid fa-clipboard-list"></i> <%= ui.bookService %></a>
+      <a href="/about" class="btn-outline" style="border-color:var(--border);color:var(--text)"><%= ui.navAbout %></a>
+    </div>
+  </div>
+</section>

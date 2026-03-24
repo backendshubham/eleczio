@@ -1,0 +1,35 @@
+<div class="adm-hd">
+  <div class="adm-hd-l">
+    <h2>Products</h2>
+    <p>Manage products shown in the storefront and hampers.</p>
+    <p style="margin-top:6px;font-size:13px;color:var(--muted);">
+      <strong><%= products.length %></strong> products in inventory
+    </p>
+  </div>
+  <div class="adm-hd-r">
+    <a href="/admin/products/new" class="adm-btn adm-btn-p">+ Add Product</a>
+  </div>
+</div>
+
+<div class="adm-card">
+  <div class="adm-card-hd">
+    <span class="adm-card-title">All Products</span>
+  </div>
+  <% products.forEach(p => { %>
+    <div class="prod-row">
+      <div class="pr-thumb">🎁</div>
+      <div class="pr-info">
+        <div class="pr-nm"><%= p.name %></div>
+        <div class="pr-cat"><%= p.category_name || p.occasion || 'Gift' %></div>
+      </div>
+      <div class="pr-price">₹<%= p.price %></div>
+      <div class="pr-acts">
+        <a href="/admin/products/<%= p.id %>/edit" class="ib">✏️</a>
+        <form method="post" action="/admin/products/<%= p.id %>/delete">
+          <button class="ib" type="submit">🗑</button>
+        </form>
+      </div>
+    </div>
+  <% }) %>
+</div>
+

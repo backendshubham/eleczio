@@ -1,0 +1,24 @@
+<% var ap = typeof activePage !== 'undefined' ? activePage : 'home'; %>
+<nav id="navbar">
+  <a href="/" class="nav-brand">
+    <div class="nav-logo-icon"><i class="fa-solid fa-bolt"></i></div>
+    <div class="nav-brand-text">
+      <%= t(settings.brandLine1) %>
+      <% if (settings.brandLine2 && (t(settings.brandLine2))) { %><span><%= t(settings.brandLine2) %></span><% } %>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/" class="<%= ap === 'home' ? 'active' : '' %>"><%= ui.navHome %></a></li>
+    <li><a href="/about" class="<%= ap === 'about' ? 'active' : '' %>"><%= ui.navAbout %></a></li>
+    <li><a href="/services" class="<%= ap === 'services' || ap === 'service-detail' ? 'active' : '' %>"><%= ui.navServices %></a></li>
+    <li><a href="/contact" class="<%= ap === 'contact' ? 'active' : '' %>"><%= ui.navContact %></a></li>
+  </ul>
+  <div class="lang-switch" title="English / Hinglish">
+    <a href="/lang/hi" class="lang-pill <%= lang === 'hi' ? 'active' : '' %>">Hinglish</a>
+    <a href="/lang/en" class="lang-pill <%= lang === 'en' ? 'active' : '' %>">English</a>
+  </div>
+  <a href="tel:<%= settings.primaryTel || '9826099647' %>" class="nav-cta"><i class="fa-solid fa-phone"></i> <%= ui.callNow %></a>
+  <div class="hamburger" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>

@@ -1,0 +1,16 @@
+<% if (typeof seo !== 'undefined' && seo) { %>
+<meta name="description" content="<%= seo.metaDescription %>" />
+<meta name="keywords" content="<%= seo.metaKeywords %>" />
+<meta name="robots" content="index, follow, max-image-preview:large" />
+<link rel="canonical" href="<%= seo.canonicalUrl %>" />
+<meta property="og:title" content="<%= seo.metaTitle %>" />
+<meta property="og:description" content="<%= seo.metaDescription %>" />
+<meta property="og:url" content="<%= seo.canonicalUrl %>" />
+<meta property="og:type" content="<%= seo.ogType %>" />
+<meta property="og:site_name" content="Eleczio" />
+<meta property="og:locale" content="<%= lang === 'en' ? 'en_IN' : 'hi_IN' %>" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="<%= seo.metaTitle %>" />
+<meta name="twitter:description" content="<%= seo.metaDescription %>" />
+<script type="application/ld+json"><%- seo.jsonLdString %></script>
+<% } %>

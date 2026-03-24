@@ -1,0 +1,131 @@
+<style>
+  .req-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; align-items: start; }
+  @media (max-width: 900px) { .req-detail-grid { grid-template-columns: 1fr; } }
+  .req-detail-card { background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 1.35rem 1.5rem; }
+  .req-detail-card h2 { font-family: 'Syne', sans-serif; font-size: 1.05rem; margin: 0 0 1rem; color: #0a1628; }
+  .req-meta { font-size: 0.9rem; line-height: 1.65; color: #1a2233; }
+  .req-meta dt { font-weight: 600; color: var(--muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; margin-top: 0.75rem; }
+  .req-meta dt:first-child { margin-top: 0; }
+  .req-meta dd { margin: 0.2rem 0 0; }
+  .req-problem { white-space: pre-wrap; font-size: 0.9rem; color: #374151; margin-top: 0.35rem; }
+  .flash-bar { padding: 0.75rem 1rem; border-radius: 12px; margin-bottom: 1rem; font-size: 0.9rem; }
+  .flash-bar.ok { background: #d1fae5; color: #065f46; }
+  .flash-bar.info { background: #dbeafe; color: #1e40af; }
+  .preview-box { width: 100%; min-height: 140px; padding: 1rem; border-radius: 12px; border: 1px solid var(--border); font-family: inherit; font-size: 0.9rem; line-height: 1.55; background: #f8fafc; resize: vertical; }
+  .wa-btn { display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 0.75rem; text-decoration: none; background: #25d366; color: #fff !important; padding: 0.75rem 1.25rem; border-radius: 12px; font-weight: 600; font-size: 0.92rem; border: none; cursor: pointer; }
+  .wa-btn:hover { filter: brightness(1.05); }
+  .wa-btn:disabled, .wa-btn.disabled { opacity: 0.45; pointer-events: none; cursor: not-allowed; }
+  .pill-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-bottom: 1rem; }
+  .req-img-panel { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 0.5rem; }
+  .req-img-link { display: block; width: 88px; height: 88px; border-radius: 12px; overflow: hidden; border: 1px solid #e5e7eb; }
+  .req-img-link img { width: 100%; height: 100%; object-fit: cover; }
+  @media (max-width: 640px) {
+    .pill-row { flex-direction: column; align-items: stretch; }
+    .pill-row .wa-btn, .pill-row .btn { width: 100%; justify-content: center; min-height: 46px; }
+    .req-detail-card { padding: 1.1rem 1.15rem; }
+  }
+</style>
+
+<div class="topbar">
+  <div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.65rem 1rem">
+    <h1 style="margin:0">Service request</h1>
+    <% var _p = request.status === 'new' ? 'pill-new' : request.status === 'closed' ? 'pill-off' : request.status === 'declined' ? 'pill-declined' : 'pill-ok'; %>
+    <span class="pill <%= _p %>"><%= requestStatusLabel(request.status) %></span>
+  </div>
+  <a href="/admin/requests" class="btn btn-ghost">← All requests</a>
+</div>
+
+<% if (saved) { %>
+  <div class="flash-bar ok">Visit date & time saved.</div>
+<% } %>
+<% if (sentFlag) { %>
+  <div class="flash-bar info">Message customer ko bheja — status ab <strong>Connected</strong> hai.</div>
+<% } %>
+
+<div class="req-detail-grid">
+  <div class="req-detail-card">
+    <h2>Customer</h2>
+    <dl class="req-meta">
+      <dt>Name</dt>
+      <dd><%= request.name %></dd>
+      <dt>Phone</dt>
+      <dd><a href="tel:<%= request.phone %>"><%= request.phone %></a></dd>
+      <dt>Address</dt>
+      <dd><%= request.address %></dd>
+      <dt>Received</dt>
+      <dd><%= new Date(request.createdAt).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }) %></dd>
+      <dt>Status</dt>
+      <dd>
+        <form method="post" action="/admin/requests/<%= request._id %>/status?next=detail" style="display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <select name="status" onchange="this.form.submit()" style="width:auto;min-width:160px;max-width:100%">
+            <option value="new" <%= request.status === 'new' ? 'selected' : '' %>><%= requestStatusLabel('new') %></option>
+            <option value="contacted" <%= request.status === 'contacted' ? 'selected' : '' %>><%= requestStatusLabel('contacted') %></option>
+            <option value="closed" <%= request.status === 'closed' ? 'selected' : '' %>><%= requestStatusLabel('closed') %></option>
+            <option value="declined" <%= request.status === 'declined' ? 'selected' : '' %>><%= requestStatusLabel('declined') %></option>
+          </select>
+        </form>
+      </dd>
+      <% if (request.customerMessageSentAt) { %>
+        <dt>Last “sent” flag</dt>
+        <dd><%= new Date(request.customerMessageSentAt).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }) %></dd>
+      <% } %>
+    </dl>
+    <h2 style="margin-top:1.25rem">Problem</h2>
+    <div class="req-problem"><%= request.problem %></div>
+    <% if (request.images && request.images.length) { %>
+      <h2 style="margin-top:1.25rem">Photos</h2>
+      <div class="req-img-panel">
+        <% request.images.forEach(function (im) { %>
+          <a href="<%= im.url %>" target="_blank" rel="noopener" class="req-img-link">
+            <img src="<%= im.url %>" alt="" loading="lazy" />
+          </a>
+        <% }); %>
+      </div>
+    <% } %>
+  </div>
+
+  <div class="req-detail-card">
+    <h2>Schedule visit & message</h2>
+    <p class="muted" style="margin:0 0 1rem;line-height:1.5">Date aur time set karein — message <strong>aaj / kal / parso</strong> ya clear date ke sath banega (India time). Phir customer ke WhatsApp par bhejne ke liye button use karein.</p>
+
+    <form method="post" action="/admin/requests/<%= request._id %>/schedule">
+      <div class="field">
+        <label>Visit date</label>
+        <input type="date" name="visit_date" value="<%= visitYmd || '' %>" />
+      </div>
+      <div class="field">
+        <label>Time (customer ko dikhne wala)</label>
+        <input type="text" name="visit_time" value="<%= request.visitTime || '' %>" placeholder="e.g. 10 AM, 10 baje, dopahar 2" />
+      </div>
+      <button type="submit" class="btn">Save date & time</button>
+    </form>
+
+    <h2 style="margin-top:1.75rem">Message preview (WhatsApp)</h2>
+    <% if (previewMessage) { %>
+      <textarea class="preview-box" readonly><%= previewMessage %></textarea>
+      <div class="pill-row">
+        <% if (customerWhatsAppUrl) { %>
+          <a href="<%= customerWhatsAppUrl %>" target="_blank" rel="noopener" class="wa-btn"><i class="fa-brands fa-whatsapp" style="font-size:1.2rem"></i> Open WhatsApp — customer</a>
+        <% } %>
+        <button type="button" class="btn btn-ghost" id="btn-copy-msg">Copy text</button>
+      </div>
+      <form method="post" action="/admin/requests/<%= request._id %>/mark-sent" style="margin-top:1rem" data-confirm="Mark sent — message customer ko bheja? Status Connected ho jayegi." data-confirm-variant="confirm" data-confirm-ok="Mark sent">
+        <button type="submit" class="btn btn-ghost" style="border:1px dashed var(--border)">Bhej diya — Connected mark karein</button>
+      </form>
+      <script>
+        document.getElementById('btn-copy-msg').addEventListener('click', function () {
+          var t = document.querySelector('.preview-box');
+          var val = t ? t.value : '';
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(val);
+          } else if (t) {
+            t.select();
+            document.execCommand('copy');
+          }
+        });
+      </script>
+    <% } else { %>
+      <p class="muted" style="margin:0">Pehle visit <strong>date</strong> aur <strong>time</strong> save karein — tab preview aur WhatsApp link yahan dikhega.</p>
+    <% } %>
+  </div>
+</div>

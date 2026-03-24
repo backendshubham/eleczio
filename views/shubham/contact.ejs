@@ -1,0 +1,83 @@
+<section class="page-hero page-hero--compact">
+  <div class="page-hero-inner reveal">
+    <div class="section-tag"><%= t(settings.complaintTag) %></div>
+    <h1 class="page-hero-title"><%= t(settings.complaintTitle) %><span><%= t(settings.complaintTitleHighlight) %></span></h1>
+    <p class="page-hero-sub"><%= t(settings.complaintSub) %></p>
+  </div>
+</section>
+
+<section class="section-light contact-layout">
+  <div class="contact-aside reveal">
+    <% if (lang === 'en') { %>
+      <h2 class="section-title" style="font-size:1.35rem;margin-bottom:.75rem">Visit & hours</h2>
+      <p class="prose" style="margin-bottom:1rem;color:var(--muted)">We are based in Khandwa and plan routes by area. Same-day slots fill quickly in summer — early booking helps.</p>
+      <ul class="contact-aside-list">
+        <li><i class="fa-solid fa-location-dot"></i> <span><%- t(settings.footerAddress).replace(/\n/g,'<br/>') %></span></li>
+        <li><i class="fa-solid fa-clock"></i> <span><strong>Typical visits:</strong> morning & afternoon blocks — exact time on call.</span></li>
+        <li><i class="fa-solid fa-indian-rupee-sign"></i> <span><%= lang === 'en' ? '₹200 visit charge — parts quoted before fitting.' : '₹200 visit — parts pehle quote.' %></span></li>
+      </ul>
+    <% } else { %>
+      <h2 class="section-title" style="font-size:1.35rem;margin-bottom:.75rem">Location aur timing</h2>
+      <p class="prose" style="margin-bottom:1rem;color:var(--muted)">Base Khandwa hai — area ke hisaab se route banate hain. Garmi me same-day slot jaldi full ho jate hain — jaldi book karein.</p>
+      <ul class="contact-aside-list">
+        <li><i class="fa-solid fa-location-dot"></i> <span><%- t(settings.footerAddress).replace(/\n/g,'<br/>') %></span></li>
+        <li><i class="fa-solid fa-clock"></i> <span><strong>Visit blocks:</strong> subah aur dopahar — exact time call par.</span></li>
+        <li><i class="fa-solid fa-indian-rupee-sign"></i> <span>₹200 visit charge — parts fitting se pehle quote.</span></li>
+      </ul>
+    <% } %>
+    <h3 style="font-family:'Syne',sans-serif;font-size:1.05rem;margin:1.5rem 0 .75rem"><%= lang === 'en' ? 'Call directly' : 'Direct call' %></h3>
+    <div class="contact-cards" style="margin-top:0">
+      <% members.forEach(function(m) { %>
+      <a href="tel:<%= m.phone %>" class="contact-card">
+        <div class="cc-icon <%= m.icon_variant %>"><i class="fa-solid fa-<%= m.icon_variant === 'eltr' ? 'tv' : 'bolt' %>"></i></div>
+        <div>
+          <div class="cc-name"><%= m.name %></div>
+          <div class="cc-role"><%= t(m.role) %></div>
+        </div>
+        <div style="margin-left:auto">
+          <div class="cc-num"><%= m.phone_display || m.phone %></div>
+        </div>
+      </a>
+      <% }); %>
+    </div>
+  </div>
+
+  <div class="complaint-form reveal" id="book-form">
+    <h2 class="section-title" style="font-size:1.25rem;margin-bottom:1rem"><%= lang === 'en' ? 'Online request' : 'Online request' %></h2>
+    <div class="form-row">
+      <div class="form-group">
+        <label><%= ui.formName %> <span>*</span></label>
+        <input type="text" class="form-control" id="f-name" placeholder="<%= ui.formPlaceholderName %>" />
+      </div>
+      <div class="form-group">
+        <label><%= ui.formPhone %> <span>*</span></label>
+        <input type="tel" class="form-control" id="f-phone" placeholder="<%= ui.formPlaceholderPhone %>" maxlength="10" inputmode="numeric" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label><%= ui.formAddress %> <span>*</span></label>
+      <input type="text" class="form-control" id="f-address" placeholder="<%= ui.formPlaceholderAddress %>" />
+    </div>
+    <div class="form-group">
+      <label><%= ui.formProblem %> <span>*</span></label>
+      <textarea class="form-control" id="f-problem" placeholder="<%= ui.formPlaceholderProblem %>"></textarea>
+    </div>
+    <div class="form-group complaint-upload-group">
+      <label><%= ui.formPhotosOptional %></label>
+      <p class="upload-helper"><%= ui.uploadPhotosSub %></p>
+      <input type="file" id="f-images" class="upload-input-hidden" accept="image/jpeg,image/png,image/webp" multiple />
+      <button type="button" class="upload-cta" id="btn-pick-photos" aria-controls="f-images">
+        <span class="upload-cta-icon"><i class="fa-solid fa-cloud-arrow-up"></i></span>
+        <span class="upload-cta-text">
+          <strong><%= ui.uploadPhotosCta %></strong>
+          <small><%= ui.uploadPhotosHint %></small>
+        </span>
+      </button>
+      <div id="photo-previews" class="photo-previews" aria-live="polite"></div>
+    </div>
+    <button type="button" class="form-submit" id="btn-submit">
+      <i class="fa-solid fa-paper-plane"></i> <%= ui.formSubmit %>
+    </button>
+    <p class="form-note"><i class="fa-solid fa-info-circle"></i> <%= t(settings.formNote) %></p>
+  </div>
+</section>

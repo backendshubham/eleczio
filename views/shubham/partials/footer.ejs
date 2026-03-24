@@ -1,0 +1,40 @@
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="nav-brand" style="margin-bottom:.8rem">
+        <div class="nav-logo-icon"><i class="fa-solid fa-bolt"></i></div>
+        <div class="nav-brand-text" style="color:#fff">
+          <%= t(settings.brandLine1) %>
+          <span><%= t(settings.footerBrandSuffix) %></span>
+        </div>
+      </div>
+      <p><%= t(settings.footerBlurb) %></p>
+    </div>
+    <div>
+      <div class="footer-heading"><%= ui.footerHeadLinks %></div>
+      <ul class="footer-links">
+        <li><a href="/"><%= ui.navHome %></a></li>
+        <li><a href="/about"><%= ui.navAbout %></a></li>
+        <li><a href="/services"><%= ui.navServices %></a></li>
+        <li><a href="/contact"><%= ui.bookService %></a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading"><%= ui.footerHeadContact %></div>
+      <% members.forEach(function(m) { %>
+      <div class="footer-contact-item">
+        <i class="fa-solid fa-<%= m.icon_variant === 'eltr' ? 'tv' : 'bolt' %>"></i>
+        <span><%= m.name %> (<%= t(m.role) %>)<br/><a href="tel:<%= m.phone %>"><%= m.phone_display || m.phone %></a></span>
+      </div>
+      <% }); %>
+      <div class="footer-contact-item">
+        <i class="fa-solid fa-location-dot"></i>
+        <span><%- t(settings.footerAddress).replace(/\n/g,'<br/>') %></span>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© <%= settings.copyrightYear %> <span><%= t(settings.brandLine1) %></span>. <%= ui.rightsLine %></p>
+    <p><%= t(settings.footerHeartText) %></p>
+  </div>
+</footer>

@@ -1,0 +1,58 @@
+<section class="section" style="max-width:720px;margin:0 auto;">
+  <div class="sec-head">
+    <div class="sec-tag">My Account</div>
+    <div class="sec-title">Saved Addresses</div>
+    <div class="sec-sub">Manage delivery addresses for faster checkout.</div>
+  </div>
+
+  <div style="margin-bottom:20px;display:flex;justify-content:flex-end;">
+    <a href="/account/addresses/new" class="btn-solid">+ Add New Address</a>
+  </div>
+
+  <% if (!addresses.length) { %>
+    <p style="font-size:14px;color:var(--muted);">You have no saved addresses yet.</p>
+  <% } else { %>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <% addresses.forEach(function(a) { %>
+        <div style="border:1px solid var(--border);border-radius:var(--r);padding:16px;background:#fff;display:flex;justify-content:space-between;gap:16px;align-items:flex-start;">
+          <div>
+            <div style="font-size:14px;font-weight:600;color:var(--ink);">
+              <%= a.name %>
+              <% if (a.is_default) { %>
+                <span style="font-size:11px;color:var(--green);border:1px solid var(--green);border-radius:10px;padding:2px 8px;margin-left:6px;">
+                  Default
+                </span>
+              <% } %>
+            </div>
+            <div style="font-size:13px;color:var(--muted);margin-top:4px;">
+              <%= a.phone %>
+            </div>
+            <div style="font-size:13px;color:var(--ink2);margin-top:6px;white-space:pre-line;">
+              <%= a.address_line1 %><% if (a.address_line2) { %>, <%= a.address_line2 %><% } %>
+              <br />
+              <%= a.city %>, <%= a.state %> - <%= a.postal_code %>
+              <br />
+              <%= a.country %>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px;min-width:140px;align-items:flex-end;">
+            <a href="/account/addresses/edit/<%= a.id %>" class="btn-ghost" style="padding:8px 14px;font-size:12px;">Edit</a>
+            <form method="post" action="/account/addresses/delete/<%= a.id %>">
+              <button type="submit" class="btn-ghost" style="padding:8px 14px;font-size:12px;border-color:var(--border2);color:var(--muted);">
+                Delete
+              </button>
+            </form>
+            <% if (!a.is_default) { %>
+              <form method="post" action="/account/addresses/default/<%= a.id %>">
+                <button type="submit" class="btn-solid" style="padding:8px 14px;font-size:12px;">
+                  Set as Default
+                </button>
+              </form>
+            <% } %>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  <% } %>
+</section>
+

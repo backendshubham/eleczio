@@ -1,0 +1,53 @@
+<section class="section" style="max-width:640px;margin:0 auto;">
+  <div class="sec-head">
+    <div class="sec-tag">My Account</div>
+    <div class="sec-title"><%= address ? 'Edit Address' : 'Add Address' %></div>
+  </div>
+
+  <form method="post" style="display:flex;flex-direction:column;gap:14px;max-width:520px;">
+    <div class="fg">
+      <label class="fl">Full Name</label>
+      <input class="fi" name="name" value="<%= address ? address.name : '' %>" required />
+    </div>
+    <div class="fg">
+      <label class="fl">Phone</label>
+      <input class="fi" name="phone" value="<%= address ? address.phone : '' %>" required />
+    </div>
+    <div class="fg">
+      <label class="fl">Address Line 1</label>
+      <input class="fi" name="address_line1" value="<%= address ? address.address_line1 : '' %>" required />
+    </div>
+    <div class="fg">
+      <label class="fl">Address Line 2 (optional)</label>
+      <input class="fi" name="address_line2" value="<%= address ? address.address_line2 : '' %>" />
+    </div>
+    <div class="co-grid">
+      <div class="fg">
+        <label class="fl">City</label>
+        <input class="fi" name="city" value="<%= address ? address.city : '' %>" required />
+      </div>
+      <div class="fg">
+        <label class="fl">State</label>
+        <input class="fi" name="state" value="<%= address ? address.state : '' %>" required />
+      </div>
+    </div>
+    <div class="co-grid">
+      <div class="fg">
+        <label class="fl">Postal Code</label>
+        <input class="fi" name="postal_code" value="<%= address ? address.postal_code : '' %>" required />
+      </div>
+      <div class="fg">
+        <label class="fl">Country</label>
+        <input class="fi" name="country" value="<%= address ? address.country : 'India' %>" required />
+      </div>
+    </div>
+    <div class="fg">
+      <label class="fl">
+        <input type="checkbox" name="is_default" <%= address && address.is_default ? 'checked' : '' %> />
+        Set as default address
+      </label>
+    </div>
+    <button type="submit" class="btn-solid" style="margin-top:10px;">Save Address</button>
+  </form>
+</section>
+

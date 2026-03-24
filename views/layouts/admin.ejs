@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title><%= title %> · Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root {
+      --navy: #0a1628;
+      --orange: #ff6b2b;
+      --border: rgba(30,111,207,0.15);
+      --muted: #6b7a99;
+      --bg: #f4f7fb;
+    }
+    * { box-sizing: border-box; }
+    .visually-hidden {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+    body {
+      margin: 0;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: #1a2233;
+      min-height: 100vh;
+      min-height: 100dvh;
+    }
+    /* —— Desktop: sidebar + main grid —— */
+    @media (min-width: 901px) {
+      body {
+        display: grid;
+        grid-template-columns: 240px 1fr;
+      }
+      .admin-mobile-bar,
+      .admin-nav-backdrop { display: none !important; }
+      aside.admin-sidebar {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        height: 100dvh;
+        transform: none !important;
+        box-shadow: none;
+      }
+      main.admin-main {
+        grid-column: 2;
+        min-width: 0;
+        padding: 1.5rem 2rem 3rem;
+        max-width: 1100px;
+      }
+    }
+    /* —— Mobile: sticky bar + off-canvas nav —— */
+    @media (max-width: 900px) {
+      body { display: block; overflow-x: clip; }
+      .admin-mobile-bar {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        position: sticky;
+        top: 0;
+        z-index: 190;
+        background: var(--navy);
+        color: #fff;
+        padding: 0.6rem 1rem;
+        padding-top: calc(0.6rem + env(safe-area-inset-top, 0px));
+        padding-left: calc(0.75rem + env(safe-area-inset-left, 0px));
+        padding-right: calc(0.75rem + env(safe-area-inset-right, 0px));
+        min-height: calc(3rem + env(safe-area-inset-top, 0px));
+        box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+      }
+      .admin-menu-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.75rem;
+        height: 2.75rem;
+        padding: 0;
+        border: none;
+        border-radius: 10px;
+        background: rgba(255,255,255,0.1);
+        color: #fff;
+        cursor: pointer;
+        flex-shrink: 0;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .admin-menu-toggle:hover { background: rgba(255,255,255,0.18); }
+      .admin-menu-toggle:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+      .admin-mobile-title {
+        font-family: 'Syne', sans-serif;
+        font-weight: 800;
+        font-size: 0.95rem;
+        letter-spacing: -0.02em;
+      }
+      .admin-nav-backdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 198;
+        background: rgba(10, 22, 40, 0.5);
+        backdrop-filter: blur(2px);
+        -webkit-backdrop-filter: blur(2px);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: opacity 0.22s ease, visibility 0.22s ease;
+      }
+      body.admin-nav-open .admin-nav-backdrop {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+      }
+      aside.admin-sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: min(88vw, 288px);
+        height: 100%;
+        height: 100dvh;
+        max-height: 100dvh;
+        z-index: 200;
+        padding: 1.1rem 1rem 1.5rem;
+        padding-top: calc(1.1rem + env(safe-area-inset-top, 0px));
+        padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        transform: translateX(-105%);
+        transition: transform 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+        box-shadow: 8px 0 40px rgba(0,0,0,0.25);
+      }
+      body.admin-nav-open aside.admin-sidebar {
+        transform: translateX(0);
+      }
+      main.admin-main {
+        padding: 1rem 1rem 2.5rem;
+        padding-left: calc(1rem + env(safe-area-inset-left, 0px));
+        padding-right: calc(1rem + env(safe-area-inset-right, 0px));
+        padding-bottom: calc(2.5rem + env(safe-area-inset-bottom, 0px));
+        max-width: 100%;
+        min-width: 0;
+      }
+    }
+    aside.admin-sidebar {
+      background: var(--navy);
+      color: #fff;
+      padding: 1.25rem;
+      overflow-y: auto;
+    }
+    aside .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem; margin-bottom: 1.5rem; line-height: 1.2; }
+    aside .logo span { color: var(--orange); font-size: 0.75rem; display: block; font-weight: 500; }
+    aside nav a {
+      display: block;
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      padding: 0.55rem 0.6rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      margin-bottom: 4px;
+    }
+    @media (max-width: 900px) {
+      aside nav a {
+        padding: 0.7rem 0.65rem;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+      }
+    }
+    aside nav a:hover, aside nav a.active { background: rgba(255,107,43,0.2); color: #fff; }
+    h1 { font-family: 'Syne', sans-serif; font-size: clamp(1.2rem, 4vw, 1.5rem); margin: 0 0 1rem; word-break: break-word; }
+    .card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    @media (max-width: 640px) {
+      .card { padding: 1rem 1.15rem; border-radius: 14px; }
+    }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 900px) {
+      .row { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .topbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.65rem;
+      }
+      .topbar .btn { width: 100%; justify-content: center; }
+    }
+    .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -0.25rem; padding: 0 0.25rem; }
+    .table-scroll table { min-width: 520px; }
+    label { display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.35rem; }
+    input, textarea, select {
+      width: 100%;
+      max-width: 100%;
+      padding: 0.6rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.92rem;
+    }
+    @media (max-width: 900px) {
+      input, textarea, select { font-size: max(16px, 0.92rem); }
+    }
+    textarea { min-height: 80px; resize: vertical; }
+    .field { margin-bottom: 1rem; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background: linear-gradient(135deg, var(--orange), #ff8c55);
+      color: #fff;
+      border: none;
+      padding: 0.65rem 1.2rem;
+      min-height: 44px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 0.9rem;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn-ghost { background: transparent; color: var(--navy); border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    th, td { text-align: left; padding: 0.65rem 0.5rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+    .pill { display: inline-block; padding: 2px 10px; border-radius: 99px; font-size: 0.75rem; font-weight: 600; }
+    .pill-new { background: #fef3c7; color: #92400e; }
+    .pill-ok { background: #d1fae5; color: #065f46; }
+    .pill-off { background: #e5e7eb; color: #374151; }
+    .pill-declined { background: #fee2e2; color: #991b1b; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem; }
+    .muted { color: var(--muted); font-size: 0.88rem; }
+    .flash { background: #d1fae5; color: #065f46; padding: 0.65rem 1rem; border-radius: 10px; margin-bottom: 1rem; font-size: 0.9rem; }
+    h3 { font-family: 'Syne', sans-serif; font-size: 1.05rem; margin: 1.25rem 0 0.75rem; }
+    fieldset { border: 1px dashed var(--border); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; }
+    legend { font-weight: 600; font-size: 0.85rem; padding: 0 0.5rem; }
+    .admin-confirm-modal {
+      display: none; position: fixed; inset: 0; z-index: 10000;
+      align-items: center; justify-content: center; padding: 1rem;
+    }
+    .admin-confirm-modal.open { display: flex; }
+    .admin-confirm-backdrop {
+      position: absolute; inset: 0; background: rgba(10, 22, 40, 0.55); backdrop-filter: blur(4px);
+    }
+    .admin-confirm-dialog {
+      position: relative; background: #fff; border-radius: 16px; padding: 1.5rem; max-width: 400px; width: 100%;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.2); border: 1px solid var(--border);
+    }
+    .admin-confirm-dialog p { margin: 0 0 1.25rem; font-size: 0.95rem; line-height: 1.5; color: #1a2233; }
+    .admin-confirm-actions { display: flex; gap: 0.75rem; justify-content: flex-end; flex-wrap: wrap; }
+    @media (max-width: 480px) {
+      .admin-confirm-dialog { padding: 1.15rem; }
+      .admin-confirm-actions { flex-direction: column-reverse; }
+      .admin-confirm-actions .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <header class="admin-mobile-bar" aria-label="Admin navigation">
+    <button type="button" class="admin-menu-toggle" id="admin-menu-toggle" aria-expanded="false" aria-controls="admin-sidebar">
+      <i class="fa-solid fa-bars" aria-hidden="true"></i>
+      <span class="visually-hidden">Menu open / close</span>
+    </button>
+    <span class="admin-mobile-title">Eleczio Admin</span>
+  </header>
+  <div class="admin-nav-backdrop" id="admin-nav-backdrop" aria-hidden="true"></div>
+  <aside id="admin-sidebar" class="admin-sidebar">
+    <div class="logo">Eleczio Admin<span>Khandwa</span></div>
+    <nav>
+      <a href="/admin" class="<%= title === 'Dashboard' ? 'active' : '' %>">Dashboard</a>
+      <% if (false) { /* tabs band — wapas chahiye to if (false) hata do */ %>
+      <a href="/admin/settings" class="<%= title === 'Site Settings' ? 'active' : '' %>">Site settings</a>
+      <a href="/admin/services" class="<%= title === 'Services' || title === 'Edit Service' ? 'active' : '' %>">Services</a>
+      <a href="/admin/members" class="<%= title === 'Team / Contacts' || title === 'Edit Member' ? 'active' : '' %>">Team</a>
+      <a href="/admin/notifications" class="<%= title === 'Notifications' || title === 'Edit Notification' ? 'active' : '' %>">Notifications</a>
+      <a href="/" target="_blank" rel="noopener">Live site ↗</a>
+      <% } %>
+      <a href="/admin/requests" class="<%= title === 'Service Requests' || title === 'Request detail' ? 'active' : '' %>">Requests</a>
+      <a href="/admin/logout">Logout</a>
+    </nav>
+  </aside>
+  <main class="admin-main">
+    <%- body %>
+  </main>
+  <div id="admin-confirm-modal" class="admin-confirm-modal" aria-hidden="true">
+    <div class="admin-confirm-backdrop" id="admin-confirm-backdrop"></div>
+    <div class="admin-confirm-dialog" role="alertdialog" aria-modal="true" aria-labelledby="admin-confirm-msg">
+      <p id="admin-confirm-msg"></p>
+      <div class="admin-confirm-actions">
+        <button type="button" class="btn btn-ghost" id="admin-confirm-cancel">Cancel</button>
+        <button type="button" class="btn" id="admin-confirm-ok" style="background:#dc2626">Delete</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var mq = window.matchMedia('(max-width: 900px)');
+      var toggle = document.getElementById('admin-menu-toggle');
+      var backdrop = document.getElementById('admin-nav-backdrop');
+      var sidebar = document.getElementById('admin-sidebar');
+      function closeNav() {
+        document.body.classList.remove('admin-nav-open');
+        document.body.style.overflow = '';
+        if (toggle) toggle.setAttribute('aria-expanded', 'false');
+        if (backdrop) backdrop.setAttribute('aria-hidden', 'true');
+      }
+      function openNav() {
+        document.body.classList.add('admin-nav-open');
+        document.body.style.overflow = 'hidden';
+        if (toggle) toggle.setAttribute('aria-expanded', 'true');
+        if (backdrop) backdrop.setAttribute('aria-hidden', 'false');
+      }
+      function onToggleClick() {
+        if (document.body.classList.contains('admin-nav-open')) closeNav();
+        else openNav();
+      }
+      if (toggle) toggle.addEventListener('click', onToggleClick);
+      if (backdrop) backdrop.addEventListener('click', closeNav);
+      if (sidebar) {
+        sidebar.querySelectorAll('nav a').forEach(function (a) {
+          a.addEventListener('click', function () {
+            if (mq.matches) closeNav();
+          });
+        });
+      }
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && document.body.classList.contains('admin-nav-open')) closeNav();
+      });
+      window.addEventListener('resize', function () {
+        if (!mq.matches) closeNav();
+      });
+
+      var modal = document.getElementById('admin-confirm-modal');
+      var msgEl = document.getElementById('admin-confirm-msg');
+      var pendingForm = null;
+
+      function closeModal() {
+        modal.classList.remove('open');
+        modal.setAttribute('aria-hidden', 'true');
+        pendingForm = null;
+      }
+
+      document.getElementById('admin-confirm-cancel').addEventListener('click', closeModal);
+      document.getElementById('admin-confirm-backdrop').addEventListener('click', closeModal);
+      document.getElementById('admin-confirm-ok').addEventListener('click', function () {
+        if (pendingForm) pendingForm.submit();
+        closeModal();
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+      });
+
+      document.addEventListener('submit', function (e) {
+        var form = e.target;
+        if (!(form instanceof HTMLFormElement)) return;
+        var text = form.getAttribute('data-confirm');
+        if (!text) return;
+        e.preventDefault();
+        pendingForm = form;
+        msgEl.textContent = text;
+        var variant = form.getAttribute('data-confirm-variant') || 'delete';
+        var okBtn = document.getElementById('admin-confirm-ok');
+        okBtn.textContent = form.getAttribute('data-confirm-ok') || (variant === 'delete' ? 'Delete' : 'Confirm');
+        okBtn.style.background = variant === 'delete' ? '#dc2626' : '#1e6fcf';
+        modal.classList.add('open');
+        modal.setAttribute('aria-hidden', 'false');
+      });
+    })();
+  </script>
+</body>
+</html>

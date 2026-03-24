@@ -1,0 +1,27 @@
+<section class="section" style="max-width:420px;margin:0 auto;">
+  <div class="sec-head">
+    <div class="sec-tag">Welcome Back</div>
+    <div class="sec-title">Sign in to GiftHouse</div>
+  </div>
+  <% if (error) { %>
+    <div style="margin-bottom:16px;padding:10px 14px;border-radius:var(--r);background:#FEE2E2;color:#991B1B;font-size:13px;">
+      <%= error %>
+    </div>
+  <% } %>
+  <form method="post" action="/auth/login" style="display:flex;flex-direction:column;gap:14px;">
+    <div class="fg">
+      <label class="fl">Email</label>
+      <input class="fi" type="email" name="email" required />
+    </div>
+    <div class="fg">
+      <label class="fl">Password</label>
+      <input class="fi" type="password" name="password" required />
+    </div>
+    <button type="submit" class="btn-solid" style="width:100%;">Sign In</button>
+  </form>
+  <p style="margin-top:16px;font-size:13px;color:var(--muted);">
+    New here?
+    <a href="/auth/register" style="color:var(--accent);">Create an account</a>
+  </p>
+</section>
+

@@ -1,0 +1,72 @@
+<div class="builder-hero">
+  <h1>Build Your <i>Perfect</i> Hamper</h1>
+  <p>Personalise every detail — from the packaging to the personal message inside</p>
+</div>
+
+<div class="stepper">
+  <div class="sp done">
+    <span class="sp-c">✓</span>
+    Choose Packaging
+  </div>
+  <div class="sp-line done"></div>
+  <div class="sp active">
+    <span class="sp-c">2</span>
+    Add Items
+  </div>
+  <div class="sp-line"></div>
+  <div class="sp">
+    <span class="sp-c">3</span>
+    Review &amp; Add to Cart
+  </div>
+</div>
+
+<div class="builder-wrap">
+  <div class="builder-content">
+    <div class="bc-title">Choose Packaging</div>
+    <div class="bc-sub">Start with a beautiful box or basket that sets the tone.</div>
+    <div class="pkg-grid">
+      <% packaging.forEach(p => { %>
+        <div class="pkg-opt">
+          <div class="pkg-icon"><%= p.icon || '📦' %></div>
+          <div class="pkg-name"><%= p.name %></div>
+          <div class="pkg-price">₹<%= p.price %></div>
+        </div>
+      <% }) %>
+    </div>
+
+    <div class="items-section">
+      <div class="items-sec-hd">Add Items</div>
+      <div class="items-grid">
+        <% addons.forEach(a => { %>
+          <div class="icard">
+            <div class="icard-icon"><%= a.icon || '🎁' %></div>
+            <div class="icard-name"><%= a.name %></div>
+            <div class="icard-price">+₹<%= a.price %></div>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+  <div class="bsidebar">
+    <div class="bsb-title">
+      Your Hamper
+      <span class="bsb-count" id="item-count">0 items</span>
+    </div>
+    <div class="box-vis" id="box-vis">
+      <!-- dynamic tags in a full implementation -->
+    </div>
+    <div class="price-rows">
+      <div class="pr"><span>Items</span><span id="hamper-items-total">₹0</span></div>
+    </div>
+    <div class="pt">
+      <span>Total</span>
+      <span id="hamper-total">₹0</span>
+    </div>
+    <form action="/build-hamper/add" method="post">
+      <input type="hidden" name="name" value="Custom Hamper" />
+      <input type="hidden" name="total" id="hamper-total-input" value="0" />
+      <button class="btn-block" type="submit">Add to Cart →</button>
+    </form>
+  </div>
+</div>
+

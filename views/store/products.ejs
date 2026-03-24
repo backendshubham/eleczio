@@ -1,0 +1,71 @@
+<section style="padding:40px 48px 0;background:var(--warm);border-bottom:1px solid var(--border);">
+  <div class="sec-tag">Our Collection</div>
+  <div class="sec-title" style="margin-bottom:24px;">All Gift Products</div>
+</section>
+
+<div class="shop-wrap">
+  <aside class="shop-filters">
+    <div class="sf-title">Occasion</div>
+    <div class="sf-opts">
+      <label class="sf-row">
+        <input type="checkbox" name="occasion" value="Birthday" />
+        Birthday
+      </label>
+      <label class="sf-row">
+        <input type="checkbox" name="occasion" value="Anniversary" />
+        Anniversary
+      </label>
+      <label class="sf-row">
+        <input type="checkbox" name="occasion" value="Wedding" />
+        Wedding
+      </label>
+      <label class="sf-row">
+        <input type="checkbox" name="occasion" value="Corporate" />
+        Corporate
+      </label>
+    </div>
+  </aside>
+  <main class="shop-main-content">
+    <div class="smc-top">
+      <div class="smc-meta">
+        Showing <strong><%= products.length %> products</strong>
+      </div>
+    </div>
+    <div class="pgrid">
+      <% products.forEach(p => { %>
+        <a href="/products/<%= p.id %>" class="pcard">
+          <div class="pcard-img" style="background:#FBF0E8;">
+            <% if (p.is_featured) { %>
+              <span class="pcard-badge badge-hot">Bestseller</span>
+            <% } %>
+            <% if (p.primary_image) { %>
+              <img
+                src="<%= p.primary_image.image_path %>"
+                alt="<%= p.name %>"
+                style="max-width:100%;max-height:100%;object-fit:cover;border-radius:24px;"
+              />
+            <% } else { %>
+              🎁
+            <% } %>
+          </div>
+          <div class="pcard-body">
+            <div class="pcard-cat"><%= p.occasion || 'Gift' %></div>
+            <div class="pcard-name"><%= p.name %></div>
+            <% if (p.description) { %>
+              <div class="pcard-desc"><%= p.description.slice(0, 80) %>...</div>
+            <% } %>
+            <div class="pcard-foot">
+              <span>
+                <span class="pcard-price">₹<%= p.price %></span>
+                <% if (p.compare_at_price && p.compare_at_price > p.price) { %>
+                  <span class="pcard-old">₹<%= p.compare_at_price %></span>
+                <% } %>
+              </span>
+            </div>
+          </div>
+        </a>
+      <% }) %>
+    </div>
+  </main>
+</div>
+

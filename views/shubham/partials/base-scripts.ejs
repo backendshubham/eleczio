@@ -1,0 +1,32 @@
+<script>
+  window.addEventListener('scroll', () => {
+    const n = document.getElementById('navbar');
+    if (n) n.classList.toggle('scrolled', window.scrollY > 40);
+  });
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  if (hamburger && mobileMenu) {
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      mobileMenu.classList.toggle('open');
+      document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+    });
+  }
+  function closeMobile() {
+    if (hamburger) hamburger.classList.remove('active');
+    if (mobileMenu) mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  window.closeMobile = closeMobile;
+  document.querySelectorAll('.reveal').forEach((r) => {
+    const o = new IntersectionObserver((entries, obs) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 60);
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    o.observe(r);
+  });
+</script>

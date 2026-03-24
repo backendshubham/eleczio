@@ -1,0 +1,125 @@
+<section class="page-hero">
+  <div class="page-hero-inner reveal">
+    <div class="section-tag"><%= t(settings.aboutTag) %></div>
+    <h1 class="page-hero-title"><%= t(settings.aboutTitle) %><span><%= t(settings.aboutTitleHighlight) %></span></h1>
+    <p class="page-hero-sub"><%= t(settings.aboutBody) %></p>
+  </div>
+</section>
+
+<section class="section-light">
+  <div class="about-story reveal">
+    <% if (lang === 'en') { %>
+      <h2 class="section-title" style="margin-bottom:1rem">Our story in Khandwa</h2>
+      <div class="prose">
+        <p>Eleczio started with a simple promise: homeowners should not have to chase multiple technicians for electrical faults and everyday appliance problems. Over the years we have served hundreds of families in Lal Chowki, Gayatri Colony and nearby areas — from quick fuse changes to full rewiring projects.</p>
+        <p>We keep safety first. That means proper earthing checks, clear explanations before opening switchboards, and no “temporary” fixes that fail after the first rain. Our team carries common spares so many jobs finish in one visit.</p>
+        <p>Electrical and electronics expertise sits together in one crew — so when your inverter, TV and wiring issues are related, you get coordinated advice instead of conflicting opinions. That saves you time, money and stress.</p>
+      </div>
+    <% } else { %>
+      <h2 class="section-title" style="margin-bottom:1rem">Khandwa me hamari story</h2>
+      <div class="prose">
+        <p>Eleczio ek simple promise se start hua: ghar pe electrical fault ho ya TV / fan jaisi cheezen, aapko teen alag technician ke peeche nahi bhaagna chahiye. Saalon se Lal Chowki, Gayatri Colony aur aas-paas ke ilakon me hundred+ families ko serve kiya — chhota fuse change se leke poori wiring tak.</p>
+        <p>Safety first: earthing check, DB / board se pehle clear samjhana, aur na hi aisa jugaad jo barsaat me kharab ho jaye. Team common spare parts saath le jaati hai taaki zyada kaam ek visit me ho.</p>
+        <p>Electrical aur electronics dono expertise ek hi team me — inverter, TV aur wiring related ho to coordinated salah milti hai, alag-alag contradictory baat nahi. Time, paisa aur tension teeno bachte hain.</p>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<section class="about-pillars">
+  <div class="about-pillars-inner">
+    <h2 class="section-title reveal" style="text-align:center;margin-bottom:2rem">
+      <%= lang === 'en' ? 'What you can expect every visit' : 'Har visit par kya expect karein' %>
+    </h2>
+    <div class="pillars-grid">
+      <div class="pillar-card reveal">
+        <i class="fa-solid fa-shield-halved"></i>
+        <h3><%= lang === 'en' ? 'Safety & clarity' : 'Safety aur clarity' %></h3>
+        <p><%= lang === 'en' ? 'We explain the fault, show options, and only then proceed — especially around mains and wet areas.' : 'Fault samjhate hain, options dikhate hain, phir kaam — khaas kar mains aur geele ilake me.' %></p>
+      </div>
+      <div class="pillar-card reveal">
+        <i class="fa-solid fa-indian-rupee-sign"></i>
+        <h3><%= lang === 'en' ? 'Fair visit charge' : 'Fair visit charge' %></h3>
+        <p><%= lang === 'en' ? '₹200 visit charge is known upfront. Spare parts are quoted before fitting — no surprise totals.' : '₹200 visit charge pehle se clear. Parts quote fitting se pehle — last me shock nahi.' %></p>
+      </div>
+      <div class="pillar-card reveal">
+        <i class="fa-solid fa-house-chimney-user"></i>
+        <h3><%= lang === 'en' ? 'Respect for your home' : 'Aapke ghar ki izzat' %></h3>
+        <p><%= lang === 'en' ? 'Neat cable dressing, dust control where possible, and polite behaviour from everyone at the door.' : 'Neat cable dressing, jahan tak dust control, aur door pe polite behaviour.' %></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about-detail" class="section-light">
+  <div class="about-inner">
+    <div class="about-visual reveal">
+      <div class="about-img-box">
+        <div class="about-icon-row">
+          <div class="about-icon-card c1">
+            <i class="fa-solid fa-bolt"></i>
+            <p><%= t(settings.aboutElecTitle) %><br/><%= t(settings.aboutElecSub) %></p>
+          </div>
+          <div class="about-icon-card c2">
+            <i class="fa-solid fa-tv"></i>
+            <p><%= t(settings.aboutEltrTitle) %><br/><%= t(settings.aboutEltrSub) %></p>
+          </div>
+          <div class="about-icon-card c3">
+            <i class="fa-solid fa-house-chimney"></i>
+            <p><%= t(settings.aboutHomeTitle) %><br/><%= t(settings.aboutHomeSub) %></p>
+          </div>
+        </div>
+        <div class="about-charge-badge">
+          <i class="fa-solid fa-indian-rupee-sign charge-icon"></i>
+          <div>
+            <div class="charge-text-main"><%= t(settings.visitBannerMain) %></div>
+            <div class="charge-text-sub"><%= t(settings.visitBannerSub) %></div>
+          </div>
+        </div>
+        <div style="text-align:center;color:rgba(255,255,255,0.5);font-size:.82rem;letter-spacing:1px;">
+          <i class="fa-solid fa-location-dot" style="color:var(--orange)"></i>
+          <%= t(settings.addressShort) %>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-content reveal">
+      <h2 class="section-title" style="margin-bottom:.5rem"><%= lang === 'en' ? 'On the ground every day' : 'Roz on ground' %></h2>
+      <p class="section-sub" style="margin-bottom:1rem"><%= lang === 'en' ? 'Numbers from site settings — they update as your business grows.' : 'Yeh numbers site settings se aate hain — business badhe to wahan update.' %></p>
+      <div class="about-stats-row">
+        <div><strong><%= settings.statYears %></strong><span><%= t(settings.statYearsLabel) %></span></div>
+        <div><strong><%= settings.statCustomers %></strong><span><%= t(settings.statCustomersLabel) %></span></div>
+        <div><strong><%= settings.statVisitCharge %></strong><span><%= t(settings.statVisitLabel) %></span></div>
+      </div>
+      <div class="about-points">
+        <% (settings.aboutPoints || []).forEach(function(pt) { %>
+        <div class="about-point">
+          <div class="point-icon"><i class="<%= pt.icon %>"></i></div>
+          <div class="point-text">
+            <strong><%= t(pt.strong) %></strong>
+            <span><%= t(pt.span) %></span>
+          </div>
+        </div>
+        <% }); %>
+      </div>
+      <div class="contact-cards">
+        <% members.forEach(function(m) { %>
+        <a href="tel:<%= m.phone %>" class="contact-card">
+          <div class="cc-icon <%= m.icon_variant %>"><i class="fa-solid fa-<%= m.icon_variant === 'eltr' ? 'tv' : 'bolt' %>"></i></div>
+          <div>
+            <div class="cc-name"><%= m.name %></div>
+            <div class="cc-role"><%= t(m.role) %></div>
+          </div>
+          <div style="margin-left:auto">
+            <div class="cc-num"><%= m.phone_display || m.phone %></div>
+          </div>
+        </a>
+        <% }); %>
+      </div>
+      <div style="margin-top:1.5rem">
+        <a href="/contact" class="btn-primary"><%= ui.bookService %></a>
+        <a href="/services" class="btn-outline" style="margin-left:.75rem;border-color:var(--border);color:var(--text)"><%= ui.navServices %></a>
+      </div>
+    </div>
+  </div>
+</section>

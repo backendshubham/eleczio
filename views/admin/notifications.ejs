@@ -1,0 +1,51 @@
+<div class="topbar">
+  <h1 style="margin:0">Notifications</h1>
+</div>
+<p class="muted">Home page par navbar ke neeche orange strip.</p>
+
+<div class="card">
+  <h3 style="margin-top:0">Nayi notification</h3>
+  <form method="post" action="/admin/notifications">
+    <div class="row">
+      <div class="field"><label>Title EN</label><input name="title_en" required /></div>
+      <div class="field"><label>Title HI</label><input name="title_hi" required /></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>Body EN</label><textarea name="body_en"></textarea></div>
+      <div class="field"><label>Body HI</label><textarea name="body_hi"></textarea></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>Icon</label><input name="icon_class" value="fa-solid fa-bullhorn" /></div>
+      <div class="field"><label>Sort</label><input type="number" name="sort_order" value="0" /></div>
+    </div>
+    <div class="field"><label>Link URL</label><input name="link_url" placeholder="https://..." /></div>
+    <button type="submit" class="btn">Add</button>
+  </form>
+</div>
+
+<div class="card">
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th>Sort</th><th>Title EN / HI</th><th>Active</th><th></th></tr></thead>
+    <tbody>
+      <% notifications.forEach(n => { %>
+      <tr>
+        <td><%= n.sort_order %></td>
+        <td>
+          <i class="<%= n.icon_class %>"></i>
+          <%= n.title && n.title.en ? n.title.en : '' %> — 
+          <span class="muted"><%= n.title && n.title.hi ? n.title.hi : '' %></span>
+        </td>
+        <td><%= n.is_active ? '✓' : '—' %></td>
+        <td>
+          <a href="/admin/notifications/<%= n._id %>/edit">Edit</a>
+          <form method="post" action="/admin/notifications/<%= n._id %>/delete" style="display:inline;margin-left:8px" data-confirm="Delete this notification permanently?">
+            <button type="submit" class="btn btn-ghost" style="padding:4px 10px;font-size:0.8rem">Delete</button>
+          </form>
+        </td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+  </div>
+</div>

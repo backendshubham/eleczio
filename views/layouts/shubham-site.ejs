@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="<%= lang === 'en' ? 'en' : 'hi' %>">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title><%= typeof pageTitle !== 'undefined' && pageTitle ? pageTitle : title %></title>
+  <%- include('../shubham/partials/seo-head') %>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="/css/shubham.css" />
+</head>
+<body class="shubham-public <%= typeof showTicker !== 'undefined' && showTicker ? 'has-notifications' : '' %>">
+<%- include('../shubham/partials/header') %>
+<%- include('../shubham/partials/mobile-menu') %>
+<% if (typeof showTicker !== 'undefined' && showTicker) { %><%- include('../shubham/partials/notifications') %><% } %>
+<main class="shubham-main<%= typeof activePage !== 'undefined' && activePage === 'home' ? ' shubham-main--home' : '' %>">
+  <%- body %>
+</main>
+<%- include('../shubham/partials/footer') %>
+<%- include('../shubham/partials/base-scripts') %>
+<% if (typeof includeContactForm !== 'undefined' && includeContactForm) { %><%- include('../shubham/partials/contact-form-script') %><% } %>
+</body>
+</html>

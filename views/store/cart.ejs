@@ -1,0 +1,77 @@
+<div class="cart-wrap">
+  <div class="cart-main">
+    <div class="cart-title">
+      Your Cart
+      <span style="font-size:18px;color:var(--muted);font-family:'Outfit',sans-serif;font-weight:400;">
+        (<%= cart.items.length %> items)
+      </span>
+    </div>
+
+    <% if (!cart.items.length) { %>
+      <p style="font-size:14px;color:var(--muted);">Your cart is empty.</p>
+    <% } %>
+
+    <% cart.items.forEach((item, index) => { %>
+      <div class="ci">
+        <div class="ci-img"><%= item.type === 'hamper' ? '🍫' : '🎁' %></div>
+        <div class="ci-body">
+          <div class="ci-cat"><%= item.type === 'hamper' ? 'Custom Hamper' : 'Product' %></div>
+          <div class="ci-name"><%= item.name %></div>
+          <% if (item.meta) { %>
+            <div class="ci-meta"><%= item.meta %></div>
+          <% } %>
+          <div class="qty-row">
+            <form method="post" action="/cart/update/<%= item.id || index %>">
+              <button class="qb" name="quantity" value="<%= item.quantity - 1 %>">−</button>
+              <span class="qn"><%= item.quantity %></span>
+              <button class="qb" name="quantity" value="<%= item.quantity + 1 %>">+</button>
+            </form>
+            <form method="post" action="/cart/remove/<%= item.id || index %>">
+              <button class="ci-rm" type="submit">Remove</button>
+            </form>
+          </div>
+        </div>
+        <div class="ci-price">
+          ₹<%= (item.lineTotal !== undefined ? item.lineTotal : item.price * item.quantity) %>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+
+  <%
+    const subtotalLocal = typeof subtotal !== 'undefined'
+      ? subtotal
+      : cart.items.reduce((sum, i) => sum + (i.lineTotal !== undefined ? i.lineTotal : i.price * i.quantity), 0);
+    const deliveryLocal = typeof delivery !== 'undefined' ? delivery : (subtotalLocal >= 999 ? 0 : 99);
+    const giftWrapLocal = typeof giftWrap !== 'undefined' ? giftWrap : (cart.items.length ? 99 : 0);
+    const totalLocal = typeof total !== 'undefined' ? total : (subtotalLocal + deliveryLocal + giftWrapLocal);
+  %>
+
+  <aside class="cart-sidebar">
+    <div class="cs-title">Order Summary</div>
+    <div class="cs-row"><span>Subtotal</span><span>₹<%= subtotalLocal %></span></div>
+    <div class="cs-row">
+      <span>Delivery</span>
+      <span style="color:<%= deliveryLocal ? 'inherit' : 'var(--green)' %>;">
+        <%= deliveryLocal ? '₹' + deliveryLocal : 'FREE' %>
+      </span>
+    </div>
+    <div class="cs-row"><span>Gift wrapping</span><span>₹<%= giftWrapLocal %></span></div>
+    <div class="cs-total">
+      <span class="cs-total-l">Total</span>
+      <span class="cs-total-r">₹<%= totalLocal %></span>
+    </div>
+    <% if (subtotalLocal >= 999) { %>
+      <div style="margin-top:16px;padding:12px 14px;background:var(--greenbg);border:1px solid #B2E4C5;border-radius:var(--r);font-size:12.5px;color:var(--green);">
+        🎉 You qualify for free delivery on this order.
+      </div>
+    <% } %>
+    <a href="/checkout" class="btn-block" style="margin-top:18px;display:block;text-align:center;">
+      Proceed to Checkout →
+    </a>
+    <a href="/products" class="btn-block btn-block-ghost" style="margin-top:8px;display:block;text-align:center;">
+      Continue Shopping
+    </a>
+  </aside>
+</div>
+

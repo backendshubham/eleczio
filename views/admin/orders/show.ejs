@@ -1,0 +1,74 @@
+<div class="adm-hd">
+  <div class="adm-hd-l">
+    <h2>Order #<%= order.order_number %></h2>
+    <p>
+      Placed on
+      <%= new Date(order.created_at).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }) %>
+      · Total ₹<%= order.total %>
+      <% if (payment) { %>
+        · Payment: <%= payment.payment_method %> / <%= payment.payment_status %>
+      <% } %>
+    </p>
+  </div>
+  <div class="adm-hd-r">
+    <form method="post" action="/admin/orders/<%= order.id %>/status">
+      <select name="status" class="smc-sort" style="margin-right:8px;">
+        <option value="pending" <%= order.status === 'pending' ? 'selected' : '' %>>Pending</option>
+        <option value="processing" <%= order.status === 'processing' ? 'selected' : '' %>>Processing</option>
+        <option value="shipped" <%= order.status === 'shipped' ? 'selected' : '' %>>Shipped</option>
+        <option value="delivered" <%= order.status === 'delivered' ? 'selected' : '' %>>Delivered</option>
+      </select>
+      <button type="submit" class="adm-btn adm-btn-p">Update Status</button>
+    </form>
+  </div>
+</div>
+
+<div class="adm-grid">
+  <div class="adm-card">
+    <div class="adm-card-hd">
+      <span class="adm-card-title">Customer Details</span>
+    </div>
+    <div style="font-size:13px;color:var(--ink2);line-height:1.6;">
+      <div><strong>Name:</strong> <%= order.customer_name %></div>
+      <div><strong>Email:</strong> <%= order.customer_email %></div>
+      <div><strong>Phone:</strong> <%= order.phone %></div>
+      <div style="margin-top:8px;"><strong>Address:</strong></div>
+      <div style="color:var(--muted);white-space:pre-line;"><%= order.shipping_address %></div>
+    </div>
+  </div>
+
+  <div class="adm-card">
+    <div class="adm-card-hd">
+      <span class="adm-card-title">Order Summary</span>
+    </div>
+    <div style="font-size:13px;color:var(--ink2);">
+      <div class="cs-row"><span>Subtotal</span><span>₹<%= order.subtotal || order.total %></span></div>
+      <div class="cs-row"><span>Delivery</span><span><%= order.shipping_cost ? '₹' + order.shipping_cost : 'Free' %></span></div>
+      <div class="cs-row"><span>Gift wrapping</span><span><%= order.gift_wrap_cost ? '₹' + order.gift_wrap_cost : '₹0' %></span></div>
+      <div class="cs-total">
+        <span class="cs-total-l">Total</span>
+        <span class="cs-total-r">₹<%= order.total %></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="adm-card" style="margin-top:18px;">
+  <div class="adm-card-hd">
+    <span class="adm-card-title">Items</span>
+  </div>
+  <% if (!items.length) { %>
+    <p style="font-size:13px;color:var(--muted);">No items recorded for this order.</p>
+  <% } else { %>
+    <% items.forEach(i => { %>
+      <div class="order-row">
+        <span class="ord-name">
+          <%= i.name %>
+          <span style="color:var(--muted);font-size:12px;">× <%= i.quantity %></span>
+        </span>
+        <span class="ord-amt">₹<%= i.price * i.quantity %></span>
+      </div>
+    <% }) %>
+  <% } %>
+</div>
+

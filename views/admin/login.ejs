@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title><%= title %></title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: grid;
+      place-items: center;
+      padding: 1rem;
+      padding-top: calc(1rem + env(safe-area-inset-top, 0px));
+      padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+      box-sizing: border-box;
+      background: linear-gradient(135deg, #0a1628, #1a3a6b);
+      font-family: 'DM Sans', sans-serif;
+    }
+    .box { background: #fff; padding: 2rem; border-radius: 20px; width: 100%; max-width: 400px; box-shadow: 0 24px 60px rgba(0,0,0,0.35); }
+    @media (max-width: 480px) {
+      .box { padding: 1.5rem 1.25rem; border-radius: 16px; }
+    }
+    h1 { font-family: 'Syne', sans-serif; font-size: 1.35rem; margin: 0 0 1.25rem; }
+    label { display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.35rem; }
+    input { width: 100%; padding: 0.75rem; border: 1px solid #e2e8f0; border-radius: 10px; margin-bottom: 1rem; font-size: max(16px, 1rem); }
+    button { width: 100%; padding: 0.85rem; border: none; border-radius: 12px; background: linear-gradient(135deg, #ff6b2b, #ff8c55); color: #fff; font-weight: 700; cursor: pointer; font-family: 'Syne', sans-serif; }
+    .err { background: #fee2e2; color: #991b1b; padding: 0.65rem; border-radius: 10px; margin-bottom: 1rem; font-size: 0.88rem; }
+    a { color: #1e6fcf; font-size: 0.88rem; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>Admin login</h1>
+    <% if (error) { %><div class="err"><%= error %></div><% } %>
+    <form method="post" action="/admin/login">
+      <label>Email</label>
+      <input type="email" name="email" required autocomplete="username" />
+      <label>Password</label>
+      <input type="password" name="password" required autocomplete="current-password" />
+      <button type="submit">Login</button>
+    </form>
+    <p style="margin-top:1rem"><a href="/">← Site par wapas</a></p>
+  </div>
+</body>
+</html>

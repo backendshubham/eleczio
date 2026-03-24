@@ -1,0 +1,40 @@
+<section class="page-hero page-hero--compact">
+  <div class="page-hero-inner reveal">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/"><%= ui.navHome %></a>
+      <span class="bc-sep">/</span>
+      <a href="/services"><%= ui.navServices %></a>
+      <span class="bc-sep">/</span>
+      <span aria-current="page"><%= t(service.title) %></span>
+    </nav>
+    <div class="svc-detail-hero-icon"><i class="<%= service.iconClass %>"></i></div>
+    <h1 class="page-hero-title" style="margin-top:.5rem"><%= t(service.title) %></h1>
+    <p class="page-hero-sub"><%= t(service.description) %></p>
+  </div>
+</section>
+
+<section class="section-light service-detail-body">
+  <div class="service-detail-inner reveal">
+    <% 
+      var detailText = t(service.detail) || t(service.description);
+      var paras = String(detailText).split(/\n\n+/).map(function(p){ return p.trim(); }).filter(Boolean);
+    %>
+    <div class="prose prose--service">
+      <% paras.forEach(function(p) { %>
+      <p><%= p %></p>
+      <% }); %>
+    </div>
+
+    <div class="service-detail-cta">
+      <h3><%= lang === 'en' ? 'Book this service' : 'Yeh service book karein' %></h3>
+      <p><%= lang === 'en' ? 'Mention this service name in the problem box — we prepare the right tools and spares.' : 'Problem box me is service ka naam likhein — tools aur spares ki tayyari aasaan ho jati hai.' %></p>
+      <div class="hero-btns" style="justify-content:flex-start;margin-top:1rem">
+        <a href="/contact" class="btn-primary"><i class="fa-solid fa-clipboard-list"></i> <%= ui.bookService %></a>
+        <a href="tel:<%= settings.primaryTel %>" class="btn-outline" style="border-color:var(--border);color:var(--text)"><i class="fa-solid fa-phone"></i> <%= ui.callNow %></a>
+      </div>
+      <p style="margin-top:1rem;font-size:.88rem;color:var(--muted)"><i class="fa-solid fa-info-circle"></i> <%= t(settings.formNote) %></p>
+    </div>
+
+    <p style="margin-top:2rem"><a href="/services" class="svc-link"><i class="fa-solid fa-arrow-left"></i> <%= lang === 'en' ? 'All services' : 'Saari services' %></a></p>
+  </div>
+</section>

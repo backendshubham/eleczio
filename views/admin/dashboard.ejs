@@ -1,0 +1,34 @@
+<div class="topbar">
+  <h1 style="margin:0">Dashboard</h1>
+</div>
+<p class="muted">Database se live counts — nayi / kul requests yahan se track karein.</p>
+<div class="row">
+  <div class="card">
+    <strong>Nayi requests</strong>
+    <div style="font-size:2rem;font-family:'Syne',sans-serif;color:#ff6b2b"><%= stats.newRequests %></div>
+  </div>
+  <div class="card">
+    <strong>Kul requests</strong>
+    <div style="font-size:2rem;font-family:'Syne',sans-serif;color:#1e6fcf"><%= stats.totalRequests %></div>
+  </div>
+  <div class="card">
+    <strong>Active services</strong>
+    <div style="font-size:2rem;font-family:'Syne',sans-serif;color:#1a2233"><%= stats.servicesCount %></div>
+  </div>
+  <div class="card">
+    <strong>Active notifications</strong>
+    <div style="font-size:2rem;font-family:'Syne',sans-serif;color:#1a2233"><%= stats.notificationsCount %></div>
+  </div>
+</div>
+<div class="card">
+  <strong>Quick links</strong>
+  <p style="margin:0.75rem 0 0;line-height:1.8">
+    <% if (false) { %>
+    <a href="/admin/settings">Visit charge / hero text</a><br/>
+    <a href="/admin/services">Service cards</a> ·
+    <a href="/admin/members">Team numbers</a> ·
+    <a href="/admin/notifications">Top notification bar</a> ·
+    <% } %>
+    <a href="/admin/requests">Customer complaints</a>
+  </p>
+</div>

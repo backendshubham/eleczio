@@ -1,0 +1,36 @@
+<section class="page-hero page-hero--compact">
+  <div class="page-hero-inner reveal">
+    <div class="section-tag"><%= t(settings.servicesSectionTag) %></div>
+    <h1 class="page-hero-title"><%= t(settings.servicesTitle) %><span><%= t(settings.servicesTitleHighlight) %></span><%= t(settings.servicesTitleSuffix) %></h1>
+    <p class="page-hero-sub"><%= t(settings.servicesSub) %></p>
+  </div>
+</section>
+
+<section class="section-light" style="padding-top:0">
+  <div class="services-inner">
+    <% if (lang === 'en') { %>
+      <p class="prose reveal" style="max-width:720px;margin:0 auto 2rem;text-align:center;color:var(--muted)">
+        Each service opens on its own page with deeper explanation — typical jobs, how we quote parts, and what to prepare before we arrive (clear access to DB, parking for material if needed).
+      </p>
+    <% } else { %>
+      <p class="prose reveal" style="max-width:720px;margin:0 auto 2rem;text-align:center;color:var(--muted)">
+        Har service ki apni page hai — kaunse kaam aksar aate hain, parts ka quote kaise hota hai, aur visit se pehle kya tayyar rakhein (DB tak clear rasta, material ke liye parking jahan zarurat ho).
+      </p>
+    <% } %>
+    <div class="services-grid">
+      <% services.forEach(function(s) { %>
+      <div class="service-card reveal">
+        <div class="svc-icon"><i class="<%= s.iconClass %>"></i></div>
+        <div class="svc-title"><%= t(s.title) %></div>
+        <p class="svc-desc"><%= t(s.description) %></p>
+        <a href="/services/<%= s.slug %>" class="svc-link"><%= lang === 'en' ? 'Open service page' : 'Service page kholein' %> <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+      <% }); %>
+    </div>
+    <div class="reveal" style="text-align:center;margin-top:2.5rem;padding:2rem;background:linear-gradient(135deg,var(--navy),var(--blue));border-radius:20px;color:#fff">
+      <h3 style="font-family:'Syne',sans-serif;font-size:1.35rem;margin-bottom:.5rem"><%= lang === 'en' ? 'Not sure which category fits?' : 'Samajh nahi aa raha kaunsi category?' %></h3>
+      <p style="opacity:.85;max-width:520px;margin:0 auto 1rem"><%= lang === 'en' ? 'Describe everything on the contact form — we route it to the right technician and reply with next steps.' : 'Contact form par sab likh dein — hum sahi technician ko route karenge aur next step batayenge.' %></p>
+      <a href="/contact" class="btn-primary"><%= ui.bookService %></a>
+    </div>
+  </div>
+</section>

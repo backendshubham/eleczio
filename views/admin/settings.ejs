@@ -1,0 +1,67 @@
+<div class="topbar">
+  <h1 style="margin:0">Site settings</h1>
+</div>
+<% if (typeof saved !== 'undefined' && saved) { %>
+<div class="flash">✓ Save ho gaya.</div>
+<% } %>
+
+<form method="post" action="/admin/settings" class="card">
+  <p class="muted" style="margin-top:0">Har field ke liye <strong>English</strong> aur <strong>Hinglish</strong> — public site par language switch se toggle hota hai.</p>
+
+  <% settingLocKeys.forEach(function(key) { %>
+  <h3 style="font-size:0.95rem;margin-bottom:0.5rem;color:#1e6fcf"><%= settingFieldLabels[key] || key %></h3>
+  <div class="row">
+    <div class="field">
+      <label>English</label>
+      <textarea name="<%= key %>_en" rows="2"><%= (settings[key] && settings[key].en) ? settings[key].en : '' %></textarea>
+    </div>
+    <div class="field">
+      <label>Hinglish</label>
+      <textarea name="<%= key %>_hi" rows="2"><%= (settings[key] && settings[key].hi) ? settings[key].hi : '' %></textarea>
+    </div>
+  </div>
+  <% }); %>
+
+  <h3>Numbers (same both languages)</h3>
+  <div class="row">
+    <div class="field"><label>Stat: years value</label><input name="statYears" value="<%= settings.statYears %>" /></div>
+    <div class="field"><label>Stat: visit ₹</label><input name="statVisitCharge" value="<%= settings.statVisitCharge %>" /></div>
+  </div>
+  <div class="field"><label>Stat: customers value</label><input name="statCustomers" value="<%= settings.statCustomers %>" /></div>
+
+  <h3>Phones & WhatsApp</h3>
+  <div class="field"><label>WhatsApp (digits, country code)</label><input name="whatsappE164" value="<%= settings.whatsappE164 %>" placeholder="919826099647" /></div>
+  <div class="row">
+    <div class="field"><label>Primary</label><input name="primaryTel" value="<%= settings.primaryTel %>" /></div>
+    <div class="field"><label>Secondary</label><input name="secondaryTel" value="<%= settings.secondaryTel %>" /></div>
+  </div>
+  <div class="field"><label>Copyright year</label><input name="copyrightYear" value="<%= settings.copyrightYear %>" /></div>
+
+  <% const ap = settings.aboutPoints || []; %>
+  <h3>About bullet points</h3>
+  <% for (let i = 0; i < 4; i++) { const pt = ap[i] || {}; %>
+  <fieldset>
+    <legend>Point <%= i + 1 %></legend>
+    <div class="row">
+      <div class="field"><label>Heading EN</label><input name="ap_s_<%= i %>_en" value="<%= pt.strong && pt.strong.en ? pt.strong.en : '' %>" /></div>
+      <div class="field"><label>Heading HI</label><input name="ap_s_<%= i %>_hi" value="<%= pt.strong && pt.strong.hi ? pt.strong.hi : '' %>" /></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>Text EN</label><textarea name="ap_t_<%= i %>_en"><%= pt.span && pt.span.en ? pt.span.en : '' %></textarea></div>
+      <div class="field"><label>Text HI</label><textarea name="ap_t_<%= i %>_hi"><%= pt.span && pt.span.hi ? pt.span.hi : '' %></textarea></div>
+    </div>
+    <div class="field"><label>Icon class</label><input name="ap_i_<%= i %>" value="<%= pt.icon || '' %>" placeholder="fa-solid fa-shield-halved" /></div>
+  </fieldset>
+  <% } %>
+
+  <% const wf = settings.whyFeatures || []; %>
+  <h3>Why us — chips</h3>
+  <% for (let i = 0; i < 4; i++) { const f = wf[i] || {}; %>
+  <div class="row">
+    <div class="field"><label>Chip <%= i+1 %> EN</label><input name="why_<%= i %>_en" value="<%= f.text && f.text.en ? f.text.en : '' %>" /></div>
+    <div class="field"><label>Chip <%= i+1 %> HI</label><input name="why_<%= i %>_hi" value="<%= f.text && f.text.hi ? f.text.hi : '' %>" /></div>
+  </div>
+  <% } %>
+
+  <button type="submit" class="btn">Save settings</button>
+</form>

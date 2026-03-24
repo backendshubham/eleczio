@@ -1,0 +1,63 @@
+<div class="topbar">
+  <h1 style="margin:0">Services</h1>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0">Naya service</h3>
+  <form method="post" action="/admin/services">
+    <div class="row">
+      <div class="field"><label>Title English</label><input name="title_en" required /></div>
+      <div class="field"><label>Title Hinglish</label><input name="title_hi" required /></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>Description EN</label><textarea name="description_en" required></textarea></div>
+      <div class="field"><label>Description HI</label><textarea name="description_hi" required></textarea></div>
+    </div>
+    <div class="row">
+      <div class="field" style="grid-column:1/-1"><label>URL slug (optional — auto from English title)</label><input name="slug" placeholder="e.g. home-electrical-repair" /></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>Detail page EN (paragraphs — blank uses description)</label><textarea name="detail_en" rows="6" placeholder="Longer text for public service page…"></textarea></div>
+      <div class="field"><label>Detail page HI</label><textarea name="detail_hi" rows="6"></textarea></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>Icon class</label><input name="iconClass" value="fa-solid fa-plug-circle-bolt" /></div>
+      <div class="field"><label>Sort</label><input name="sort_order" type="number" value="0" /></div>
+    </div>
+    <button type="submit" class="btn">Add</button>
+  </form>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0">Sab services</h3>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th>Order</th><th>Title (EN / HI)</th><th>Slug / link</th><th>Active</th><th></th></tr></thead>
+    <tbody>
+      <% services.forEach(s => { %>
+      <tr>
+        <td><%= s.sort_order %></td>
+        <td>
+          <i class="<%= s.iconClass %>"></i>
+          <%= s.title && s.title.en ? s.title.en : '' %> / 
+          <%= s.title && s.title.hi ? s.title.hi : '' %>
+        </td>
+        <td>
+          <% if (s.slug) { %>
+            <code><%= s.slug %></code>
+            <a href="/services/<%= s.slug %>" target="_blank" rel="noopener" style="margin-left:8px">View</a>
+          <% } else { %>—<% } %>
+        </td>
+        <td><%= s.is_active ? '✓' : '—' %></td>
+        <td>
+          <a href="/admin/services/<%= s._id %>/edit">Edit</a>
+          <form method="post" action="/admin/services/<%= s._id %>/delete" style="display:inline;margin-left:8px" data-confirm="Delete this service permanently?">
+            <button type="submit" class="btn btn-ghost" style="padding:4px 10px;font-size:0.8rem">Delete</button>
+          </form>
+        </td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+  </div>
+</div>

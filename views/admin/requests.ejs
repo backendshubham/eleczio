@@ -1,0 +1,134 @@
+<style>
+  .req-hero { margin-bottom: 1.25rem; }
+  .req-filter-bar {
+    display: flex; flex-wrap: wrap; align-items: flex-end; gap: 1rem 1.5rem;
+    margin-bottom: 1.25rem; padding: 1rem 1.15rem;
+    background: #fff; border: 1px solid var(--border); border-radius: 14px;
+  }
+  .req-filter-bar label { font-size: 0.78rem; font-weight: 600; color: var(--muted); display: block; margin-bottom: 0.35rem; }
+  .req-filter-bar select { min-width: 180px; max-width: 100%; }
+  .req-meta-line { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.75rem; }
+  .req-pagination {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.75rem 1.25rem;
+    margin: 1.25rem 0 0; padding: 0.85rem 1rem; background: #fff; border: 1px solid var(--border); border-radius: 12px;
+    font-size: 0.88rem;
+  }
+  .req-pagination a { color: #1e6fcf; font-weight: 600; text-decoration: none; }
+  .req-pagination a:hover { text-decoration: underline; }
+  .req-pagination .muted { margin: 0; }
+  .req-board { display: flex; flex-direction: column; gap: 1rem; }
+  .req-card {
+    background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 1.15rem 1.35rem;
+    display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: start;
+    transition: box-shadow 0.2s;
+  }
+  .req-card:hover { box-shadow: 0 8px 28px rgba(30,111,207,0.08); }
+  @media (max-width: 768px) { .req-card { grid-template-columns: 1fr; } }
+  .req-card-main { min-width: 0; }
+  .req-card-top { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem; margin-bottom: 0.5rem; }
+  .req-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.05rem; color: #0a1628; }
+  .req-when { font-size: 0.82rem; color: var(--muted); }
+  .req-phone a { color: #1e6fcf; font-weight: 600; text-decoration: none; }
+  .req-addr { font-size: 0.88rem; color: #4b5563; line-height: 1.45; margin-top: 0.35rem; }
+  .req-prob { font-size: 0.88rem; color: #374151; margin-top: 0.5rem; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .req-side { display: flex; flex-direction: column; gap: 0.65rem; align-items: flex-end; min-width: 140px; }
+  @media (max-width: 768px) { .req-side { align-items: flex-start; flex-direction: row; flex-wrap: wrap; } }
+  .req-photo-details summary { cursor: pointer; font-size: 0.8rem; font-weight: 600; color: #1e6fcf; }
+  .req-img-panel { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .req-img-link { width: 48px; height: 48px; border-radius: 8px; overflow: hidden; border: 1px solid #e5e7eb; display: block; }
+  .req-img-link img { width: 100%; height: 100%; object-fit: cover; }
+  .sched-pill { font-size: 0.78rem; padding: 4px 10px; border-radius: 99px; background: #e0f2fe; color: #0369a1; font-weight: 600; }
+  .req-actions .btn { font-size: 0.85rem; padding: 0.5rem 1rem; }
+  @media (max-width: 640px) {
+    .req-side { align-items: stretch !important; width: 100%; max-width: 100%; }
+    .req-actions { width: 100%; }
+    .req-actions .btn { width: 100%; justify-content: center; min-height: 44px; }
+    .req-actions form select { width: 100%; min-width: 0; }
+  }
+</style>
+
+<div class="topbar req-hero">
+  <h1 style="margin:0">Service requests</h1>
+</div>
+<p class="muted">Pehli baar yahan aane par filter <strong>Nayi request</strong> par hota hai. Sab dikhane ke liye dropdown se <strong>Sab (all)</strong> chuno. <strong>Mark sent</strong> par status <strong>Connected</strong> ho jati hai; reject ke liye <strong>Declined</strong>.</p>
+
+<form class="req-filter-bar" method="get" action="/admin/requests">
+  <div>
+    <label for="f-status">Filter — status</label>
+    <select id="f-status" name="status" onchange="var f=this.form;f.page.value=1;f.submit();">
+      <option value="all" <%= statusFilter === 'all' ? 'selected' : '' %>>Sab (all)</option>
+      <option value="new" <%= statusFilter === 'new' ? 'selected' : '' %>>Nayi request</option>
+      <option value="contacted" <%= statusFilter === 'contacted' ? 'selected' : '' %>>Connected</option>
+      <option value="closed" <%= statusFilter === 'closed' ? 'selected' : '' %>>Closed</option>
+      <option value="declined" <%= statusFilter === 'declined' ? 'selected' : '' %>>Declined</option>
+    </select>
+  </div>
+  <input type="hidden" name="page" value="<%= currentPage %>" />
+</form>
+
+<div class="req-meta-line">
+  <% if (typeof total !== 'undefined') { %>
+    <strong><%= total %></strong> request(s)<% if (statusFilter !== 'all') { %> — filter: <strong><%= requestStatusLabel(statusFilter) %></strong><% } %>
+  <% } %>
+</div>
+
+<div class="req-board">
+  <% requests.forEach(function (r) { %>
+    <% var ymd = locals.visitDateToYmd(r.visitDate); %>
+    <% var pillClass = r.status === 'new' ? 'pill-new' : r.status === 'closed' ? 'pill-off' : r.status === 'declined' ? 'pill-declined' : 'pill-ok'; %>
+    <article class="req-card">
+      <div class="req-card-main">
+        <div class="req-card-top">
+          <span class="req-name"><%= r.name %></span>
+          <span class="pill <%= pillClass %>"><%= requestStatusLabel(r.status) %></span>
+          <% if (ymd && r.visitTime) { %>
+            <span class="sched-pill">Scheduled: <%= ymd %> · <%= r.visitTime %></span>
+          <% } %>
+        </div>
+        <div class="req-when">Received: <%= new Date(r.createdAt).toLocaleString('en-IN', { dateStyle: 'short', timeStyle: 'short' }) %></div>
+        <div class="req-phone"><a href="tel:<%= r.phone %>"><%= r.phone %></a></div>
+        <div class="req-addr"><%= r.address %></div>
+        <div class="req-prob"><%= r.problem %></div>
+        <% if (r.images && r.images.length) { %>
+          <details class="req-photo-details" style="margin-top:0.5rem">
+            <summary><%= r.images.length %> photo(s)</summary>
+            <div class="req-img-panel">
+              <% r.images.forEach(function (im) { %>
+                <a href="<%= im.url %>" target="_blank" rel="noopener" class="req-img-link">
+                  <img src="<%= im.url %>" alt="" loading="lazy" />
+                </a>
+              <% }); %>
+            </div>
+          </details>
+        <% } %>
+      </div>
+      <div class="req-side req-actions">
+        <form method="post" action="/admin/requests/<%= r._id %>/status?status=<%= statusFilter %>&page=<%= currentPage %>" style="margin:0">
+          <label class="muted" style="font-size:0.72rem;display:block;margin-bottom:4px">Status</label>
+          <select name="status" onchange="this.form.submit()" style="width:100%;min-width:130px">
+            <option value="new" <%= r.status === 'new' ? 'selected' : '' %>>Nayi request</option>
+            <option value="contacted" <%= r.status === 'contacted' ? 'selected' : '' %>>Connected</option>
+            <option value="closed" <%= r.status === 'closed' ? 'selected' : '' %>>Closed</option>
+            <option value="declined" <%= r.status === 'declined' ? 'selected' : '' %>>Declined</option>
+          </select>
+        </form>
+        <a href="/admin/requests/<%= r._id %>" class="btn">Manage · schedule &amp; WhatsApp</a>
+      </div>
+    </article>
+  <% }); %>
+  <% if (!requests.length) { %>
+    <div class="card muted">Is filter ke liye koi request nahi.</div>
+  <% } %>
+</div>
+
+<% if (typeof totalPages !== 'undefined' && totalPages > 1) { %>
+  <nav class="req-pagination" aria-label="Pagination">
+    <% if (currentPage > 1) { %>
+      <a href="/admin/requests?status=<%= statusFilter %>&page=<%= currentPage - 1 %>">← Previous</a>
+    <% } %>
+    <span class="muted">Page <strong><%= currentPage %></strong> / <%= totalPages %> (<%= perPage %> per page)</span>
+    <% if (currentPage < totalPages) { %>
+      <a href="/admin/requests?status=<%= statusFilter %>&page=<%= currentPage + 1 %>">Next →</a>
+    <% } %>
+  </nav>
+<% } %>

@@ -1,0 +1,114 @@
+<div class="co-wrap">
+  <div class="co-main">
+    <div class="co-title">Checkout</div>
+    <form method="post" action="/checkout">
+      <div class="co-section">
+        <div class="co-sec-hd">Delivery Details</div>
+
+        <% if (user && addresses && addresses.length) { %>
+          <div class="fg" style="margin-bottom:14px;">
+            <label class="fl">Saved Addresses</label>
+            <select class="fi" name="address_id">
+              <% addresses.forEach(function(a) { %>
+                <option value="<%= a.id %>" <%= defaultAddress && defaultAddress.id === a.id ? 'selected' : '' %>>
+                  <%= a.name %> — <%= a.city %>, <%= a.state %> (<%= a.postal_code %>)
+                  <%= a.is_default ? ' · Default' : '' %>
+                </option>
+              <% }); %>
+            </select>
+            <div style="font-size:12px;color:var(--muted);margin-top:4px;">
+              Manage your addresses in <a href="/account/addresses" style="color:var(--accent);">My Addresses</a>.
+            </div>
+          </div>
+        <% } %>
+
+        <div class="co-grid">
+          <div class="fg">
+            <label class="fl">First Name</label>
+            <input class="fi" name="first_name" required />
+          </div>
+          <div class="fg">
+            <label class="fl">Last Name</label>
+            <input class="fi" name="last_name" required />
+          </div>
+        </div>
+        <div class="co-grid full" style="margin-top:14px;">
+          <div class="fg">
+            <label class="fl">Full Address</label>
+            <input class="fi" name="address" required />
+          </div>
+        </div>
+        <div class="co-grid" style="margin-top:14px;">
+          <div class="fg">
+            <label class="fl">City</label>
+            <input class="fi" name="city" required />
+          </div>
+          <div class="fg">
+            <label class="fl">PIN Code</label>
+            <input class="fi" name="postal_code" required />
+          </div>
+        </div>
+        <div class="co-grid" style="margin-top:14px;">
+          <div class="fg">
+            <label class="fl">Phone</label>
+            <input class="fi" name="phone" required />
+          </div>
+          <div class="fg">
+            <label class="fl">Preferred Delivery Date</label>
+            <input class="fi" type="date" name="preferred_delivery_date" />
+          </div>
+        </div>
+      </div>
+
+      <div class="co-section">
+        <div class="co-sec-hd">Gift Message</div>
+        <textarea class="fi" name="gift_message" style="width:100%;min-height:90px;resize:vertical;"></textarea>
+      </div>
+
+      <div class="co-section">
+        <div class="co-sec-hd">Payment Method</div>
+        <label class="pay-opt sel">
+          <div class="pay-radio"><div class="pay-dot"></div></div>
+          <span class="pay-lbl">Cash on Delivery</span>
+          <span class="pay-badge pb-cod">No extra charge</span>
+          <input type="radio" name="payment_method" value="cod" checked hidden />
+        </label>
+      </div>
+
+      <button class="btn-solid" style="width:100%;padding:16px;font-size:15px;border-radius:var(--r);">
+        Place Order
+      </button>
+    </form>
+  </div>
+
+  <%
+    const subtotal = cart.items.reduce((sum, i) => sum + i.price * i.quantity, 0);
+    const delivery = subtotal >= 999 ? 0 : 99;
+    const giftWrap = cart.items.length ? 99 : 0;
+    const total = subtotal + delivery + giftWrap;
+  %>
+
+  <aside class="co-sidebar">
+    <div class="cs-title" style="margin-bottom:18px;">Order Review</div>
+    <% cart.items.forEach(i => { %>
+      <div class="mini-item">
+        <div class="mi-img"><%= i.type === 'hamper' ? '🍫' : '🎁' %></div>
+        <div class="mi-info">
+          <div class="mi-name"><%= i.name %></div>
+          <div class="mi-meta">Qty: <%= i.quantity %></div>
+        </div>
+        <div class="mi-price">₹<%= i.price * i.quantity %></div>
+      </div>
+    <% }) %>
+    <div style="margin-top:20px;">
+      <div class="cs-row"><span>Subtotal</span><span>₹<%= subtotal %></span></div>
+      <div class="cs-row"><span>Delivery</span><span><%= delivery ? '₹' + delivery : 'Free' %></span></div>
+      <div class="cs-row"><span>Gift wrapping</span><span>₹<%= giftWrap %></span></div>
+      <div class="cs-total">
+        <span class="cs-total-l">Total</span>
+        <span class="cs-total-r">₹<%= total %></span>
+      </div>
+    </div>
+  </aside>
+</div>
+
