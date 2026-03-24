@@ -104,14 +104,14 @@
       </div>
       <div class="contact-cards">
         <% members.forEach(function(m) { %>
-        <a href="tel:<%= m.phone %>" class="contact-card">
+        <a href="<%= indiaTelHref(m.phone) %>" class="contact-card">
           <div class="cc-icon <%= m.icon_variant %>"><i class="fa-solid fa-<%= m.icon_variant === 'eltr' ? 'tv' : 'bolt' %>"></i></div>
           <div>
             <div class="cc-name"><%= m.name %></div>
             <div class="cc-role"><%= t(m.role) %></div>
           </div>
           <div style="margin-left:auto">
-            <div class="cc-num"><%= m.phone_display || m.phone %></div>
+            <div class="cc-num"><%= indiaTelLabel(m.phone, m.phone_display) %></div>
           </div>
         </a>
         <% }); %>

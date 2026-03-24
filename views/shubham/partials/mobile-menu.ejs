@@ -1,14 +1,14 @@
 <% var ap = typeof activePage !== 'undefined' ? activePage : 'home'; %>
 <div class="mobile-menu" id="mobileMenu">
-  <div class="lang-switch" style="position:static;transform:none;margin-bottom:8px">
-    <a href="/lang/hi" class="lang-pill <%= lang === 'hi' ? 'active' : '' %>">Hinglish</a>
-    <a href="/lang/en" class="lang-pill <%= lang === 'en' ? 'active' : '' %>">English</a>
+  <div class="lang-switch" role="group" aria-label="Language">
+    <a href="/lang/hi" class="lang-pill <%= lang === 'hi' ? 'active' : '' %>" <%= lang === 'hi' ? 'aria-current="true"' : '' %>>Hinglish</a>
+    <a href="/lang/en" class="lang-pill <%= lang === 'en' ? 'active' : '' %>" <%= lang === 'en' ? 'aria-current="true"' : '' %>>English</a>
   </div>
   <a href="/" onclick="closeMobile()"><%= ui.navHome %></a>
   <a href="/about" onclick="closeMobile()"><%= ui.navAbout %></a>
   <a href="/services" onclick="closeMobile()"><%= ui.navServices %></a>
   <a href="/contact" onclick="closeMobile()"><%= ui.navContact %></a>
-  <a href="tel:<%= settings.primaryTel || '9826099647' %>" class="btn-primary" style="font-size:1.1rem;padding:14px 36px;">
+  <a href="<%= indiaTelHref(settings.primaryTel || '9826099647') %>" class="btn-primary" style="font-size:1.1rem;padding:14px 36px;">
     <i class="fa-solid fa-phone"></i> <%= ui.callNow %>
   </a>
 </div>

@@ -24,7 +24,7 @@
       <% members.forEach(function(m) { %>
       <div class="footer-contact-item">
         <i class="fa-solid fa-<%= m.icon_variant === 'eltr' ? 'tv' : 'bolt' %>"></i>
-        <span><%= m.name %> (<%= t(m.role) %>)<br/><a href="tel:<%= m.phone %>"><%= m.phone_display || m.phone %></a></span>
+        <span><%= m.name %> (<%= t(m.role) %>)<br/><a href="<%= indiaTelHref(m.phone) %>"><%= indiaTelLabel(m.phone, m.phone_display) %></a></span>
       </div>
       <% }); %>
       <div class="footer-contact-item">

@@ -33,7 +33,7 @@
     </div>
   </div>
   <div class="hero-btns">
-    <a href="tel:<%= settings.primaryTel %>" class="btn-primary"><i class="fa-solid fa-phone-volume"></i> <%= ui.callHero %></a>
+    <a href="<%= indiaTelHref(settings.primaryTel || '9826099647') %>" class="btn-primary"><i class="fa-solid fa-phone-volume"></i> <%= ui.callHero %></a>
     <a href="/contact" class="btn-outline"><i class="fa-solid fa-clipboard-list"></i> <%= ui.bookService %></a>
   </div>
   <a href="/services" class="hero-scroll-hint" style="text-decoration:none;color:inherit;">

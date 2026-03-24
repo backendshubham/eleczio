@@ -49,7 +49,7 @@
       <dt>Name</dt>
       <dd><%= request.name %></dd>
       <dt>Phone</dt>
-      <dd><a href="tel:<%= request.phone %>"><%= request.phone %></a></dd>
+      <dd><a href="<%= indiaTelHref(request.phone) %>"><%= indiaTelLabel(request.phone) %></a></dd>
       <dt>Address</dt>
       <dd><%= request.address %></dd>
       <dt>Received</dt>

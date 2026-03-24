@@ -30,7 +30,7 @@
       <p><%= lang === 'en' ? 'Mention this service name in the problem box — we prepare the right tools and spares.' : 'Problem box me is service ka naam likhein — tools aur spares ki tayyari aasaan ho jati hai.' %></p>
       <div class="hero-btns" style="justify-content:flex-start;margin-top:1rem">
         <a href="/contact" class="btn-primary"><i class="fa-solid fa-clipboard-list"></i> <%= ui.bookService %></a>
-        <a href="tel:<%= settings.primaryTel %>" class="btn-outline" style="border-color:var(--border);color:var(--text)"><i class="fa-solid fa-phone"></i> <%= ui.callNow %></a>
+        <a href="<%= indiaTelHref(settings.primaryTel || '9826099647') %>" class="btn-outline" style="border-color:var(--border);color:var(--text)"><i class="fa-solid fa-phone"></i> <%= ui.callNow %></a>
       </div>
       <p style="margin-top:1rem;font-size:.88rem;color:var(--muted)"><i class="fa-solid fa-info-circle"></i> <%= t(settings.formNote) %></p>
     </div>

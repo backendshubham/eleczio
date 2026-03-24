@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 
 const { attachUserFromToken } = require('./middlewares/auth');
 const { languageMiddleware } = require('./middlewares/language');
+const { indiaTelHref, indiaTelLabel } = require('./utils/indiaPhone');
 
 const publicRoutes = require('./routes/public.routes');
 const adminRoutes = require('./routes/admin.routes');
@@ -27,6 +28,8 @@ app.use(express.json());
 app.use(attachUserFromToken);
 app.use((req, res, next) => {
   res.locals.user = req.user || null;
+  res.locals.indiaTelHref = indiaTelHref;
+  res.locals.indiaTelLabel = indiaTelLabel;
   next();
 });
 

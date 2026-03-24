@@ -1,12 +1,15 @@
 /**
  * Site-wide SEO: keywords, descriptions, canonical, JSON-LD.
- * Set PUBLIC_SITE_URL (or SITE_URL) in .env for production canonicals & sitemap.
+ * Set PUBLIC_SITE_URL (or SITE_URL) in .env — default is https://eleczio.shop.
+ * Local dev: PUBLIC_SITE_URL=http://localhost:3000
  */
 const { pick } = require('../utils/i18n');
 
+const DEFAULT_PUBLIC_SITE = 'https://eleczio.shop';
+
 function normalizeBase(url) {
   const s = String(url || '').trim();
-  if (!s) return 'http://localhost:3000';
+  if (!s) return DEFAULT_PUBLIC_SITE;
   return s.replace(/\/$/, '');
 }
 
@@ -94,7 +97,7 @@ function buildJsonLd({ base, settings, lang, path, pageTitle, service }) {
     url: base,
     telephone: telE164,
     priceRange: '₹₹',
-    image: `${base}/favicon.ico`,
+    image: [`${base}/images/og-default.png`, `${base}/apple-touch-icon.png`],
     address: {
       '@type': 'PostalAddress',
       streetAddress: street,
@@ -173,12 +176,17 @@ function buildSeoForPage({ settings, lang, path, pageTitle, pageKey, service }) 
     service: pageKey === 'service' ? service : null
   });
 
+  const ogImageUrl = `${base}/images/og-default.png`;
+
   return {
     metaTitle: pageTitle,
     metaDescription,
     metaKeywords: KEYWORDS_GLOBAL,
     canonicalUrl,
     ogType: pageKey === 'service' ? 'article' : 'website',
+    ogImageUrl,
+    ogImageWidth: 1200,
+    ogImageHeight: 630,
     jsonLdString,
     baseUrl: base
   };

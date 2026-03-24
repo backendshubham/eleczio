@@ -86,7 +86,7 @@
           <% } %>
         </div>
         <div class="req-when">Received: <%= new Date(r.createdAt).toLocaleString('en-IN', { dateStyle: 'short', timeStyle: 'short' }) %></div>
-        <div class="req-phone"><a href="tel:<%= r.phone %>"><%= r.phone %></a></div>
+        <div class="req-phone"><a href="<%= indiaTelHref(r.phone) %>"><%= indiaTelLabel(r.phone) %></a></div>
         <div class="req-addr"><%= r.address %></div>
         <div class="req-prob"><%= r.problem %></div>
         <% if (r.images && r.images.length) { %>

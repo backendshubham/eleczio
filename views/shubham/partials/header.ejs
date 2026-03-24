@@ -13,11 +13,11 @@
     <li><a href="/services" class="<%= ap === 'services' || ap === 'service-detail' ? 'active' : '' %>"><%= ui.navServices %></a></li>
     <li><a href="/contact" class="<%= ap === 'contact' ? 'active' : '' %>"><%= ui.navContact %></a></li>
   </ul>
-  <div class="lang-switch" title="English / Hinglish">
-    <a href="/lang/hi" class="lang-pill <%= lang === 'hi' ? 'active' : '' %>">Hinglish</a>
-    <a href="/lang/en" class="lang-pill <%= lang === 'en' ? 'active' : '' %>">English</a>
+  <div class="lang-switch" role="group" aria-label="Language" title="English / Hinglish">
+    <a href="/lang/hi" class="lang-pill <%= lang === 'hi' ? 'active' : '' %>" <%= lang === 'hi' ? 'aria-current="true"' : '' %>>Hinglish</a>
+    <a href="/lang/en" class="lang-pill <%= lang === 'en' ? 'active' : '' %>" <%= lang === 'en' ? 'aria-current="true"' : '' %>>English</a>
   </div>
-  <a href="tel:<%= settings.primaryTel || '9826099647' %>" class="nav-cta"><i class="fa-solid fa-phone"></i> <%= ui.callNow %></a>
+  <a href="<%= indiaTelHref(settings.primaryTel || '9826099647') %>" class="nav-cta"><i class="fa-solid fa-phone"></i> <%= ui.callNow %></a>
   <div class="hamburger" id="hamburger">
     <span></span><span></span><span></span>
   </div>
