@@ -110,15 +110,15 @@
             <div class="cc-name"><%= m.name %></div>
             <div class="cc-role"><%= t(m.role) %></div>
           </div>
-          <div style="margin-left:auto">
+          <div class="contact-card__num">
             <div class="cc-num"><%= indiaTelLabel(m.phone, m.phone_display) %></div>
           </div>
         </a>
         <% }); %>
       </div>
-      <div style="margin-top:1.5rem">
+      <div class="about-cta-row">
         <a href="/contact" class="btn-primary"><%= ui.bookService %></a>
-        <a href="/services" class="btn-outline" style="margin-left:.75rem;border-color:var(--border);color:var(--text)"><%= ui.navServices %></a>
+        <a href="/services" class="btn-outline btn-outline--on-light"><%= ui.navServices %></a>
       </div>
     </div>
   </div>
