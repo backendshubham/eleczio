@@ -1,7 +1,13 @@
 <section class="page-hero page-hero--compact">
   <div class="page-hero-inner reveal">
     <div class="section-tag"><%= t(settings.servicesSectionTag) %></div>
-    <h1 class="page-hero-title"><%= t(settings.servicesTitle) %><span><%= t(settings.servicesTitleHighlight) %></span><%= t(settings.servicesTitleSuffix) %></h1>
+    <h1 class="page-hero-title">
+      <%= t(settings.servicesTitle) %>
+      <span><%= t(settings.servicesTitleHighlight) %></span>
+      <% if (settings.servicesTitleSuffix && t(settings.servicesTitleSuffix)) { %>
+        <%= t(settings.servicesTitleSuffix) %>
+      <% } %>
+    </h1>
     <p class="page-hero-sub"><%= t(settings.servicesSub) %></p>
   </div>
 </section>
@@ -9,11 +15,11 @@
 <section class="section-light" style="padding-top:0">
   <div class="services-inner">
     <% if (lang === 'en') { %>
-      <p class="prose reveal" style="max-width:720px;margin:0 auto 2rem;text-align:center;color:var(--muted)">
+      <p class="prose reveal" style="max-width:720px;margin:1rem auto 2rem;text-align:center;color:var(--muted)">
         Each service opens on its own page with deeper explanation — typical jobs, how we quote parts, and what to prepare before we arrive (clear access to DB, parking for material if needed).
       </p>
     <% } else { %>
-      <p class="prose reveal" style="max-width:720px;margin:0 auto 2rem;text-align:center;color:var(--muted)">
+      <p class="prose reveal" style="max-width:720px;margin:1rem auto 2rem;text-align:center;color:var(--muted)">
         Har service ki apni page hai — kaunse kaam aksar aate hain, parts ka quote kaise hota hai, aur visit se pehle kya tayyar rakhein (DB tak clear rasta, material ke liye parking jahan zarurat ho).
       </p>
     <% } %>

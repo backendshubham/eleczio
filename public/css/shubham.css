@@ -17,7 +17,7 @@
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{font-family:'DM Sans',sans-serif;background:var(--off-white);color:var(--text);overflow-x:hidden}
+body{font-family:'Poppins',sans-serif;background:var(--off-white);color:var(--text);overflow-x:hidden}
 .shubham-main{max-width:100%;overflow-x:hidden}
 ::-webkit-scrollbar{width:6px}
 ::-webkit-scrollbar-track{background:var(--navy)}
@@ -26,8 +26,24 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 nav.scrolled{height:60px;background:rgba(10,22,40,0.98);box-shadow:0 4px 32px rgba(0,0,0,0.25)}
 .nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
 .nav-logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--orange),var(--gold));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;box-shadow:0 0 18px rgba(255,107,43,0.4)}
-.nav-brand-text{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;color:#fff;line-height:1.1}
-.nav-brand-text span{color:var(--orange);display:block;font-size:.72rem;font-weight:400;letter-spacing:1.5px;text-transform:uppercase}
+.nav-brand-text{display:flex;flex-direction:column;gap:2px;line-height:1.05}
+.nav-brand-text .brand-main{
+  font-family:'Syne',sans-serif !important;
+  font-weight:800;
+  font-size:1.05rem;
+  letter-spacing:.2px;
+  color:#fff;
+  text-shadow:0 2px 18px rgba(0,0,0,0.25);
+}
+.nav-brand-text .brand-sub{
+  font-family:'Poppins',sans-serif !important;
+  color:rgba(255,140,85,0.95);
+  display:block;
+  font-size:.70rem;
+  font-weight:600;
+  letter-spacing:1.8px;
+  text-transform:uppercase;
+}
 .nav-links{display:flex;gap:2rem;list-style:none}
 .nav-links a{color:rgba(255,255,255,0.8);text-decoration:none;font-size:.92rem;font-weight:500;transition:color .2s;position:relative;padding-bottom:4px}
 .nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--orange);transition:width .3s;border-radius:2px}
@@ -212,7 +228,7 @@ section{padding:80px 5%}
 .form-group{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.2rem}
 .form-group label{font-size:.87rem;font-weight:600;color:var(--text)}
 .form-group label span{color:var(--orange)}
-.form-control{background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:.85rem 1.1rem;font-family:'DM Sans',sans-serif;font-size:.95rem;color:var(--text);transition:all .25s;outline:none;width:100%}
+.form-control{background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:.85rem 1.1rem;font-family:'Poppins',sans-serif;font-size:.95rem;color:var(--text);transition:all .25s;outline:none;width:100%}
 .form-control:focus{border-color:var(--electric);box-shadow:0 0 0 4px rgba(33,150,243,0.1)}
 .form-control::placeholder{color:var(--muted)}
 textarea.form-control{resize:vertical;min-height:120px}
@@ -349,3 +365,12 @@ body.shubham-public.has-notifications .shubham-main:not(.shubham-main--home){pad
 .photo-preview-tile img{width:100%;height:100%;object-fit:cover;display:block}
 .photo-preview-remove{position:absolute;top:6px;right:6px;width:28px;height:28px;border:none;border-radius:8px;background:rgba(10,22,40,0.75);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem;transition:background .2s}
 .photo-preview-remove:hover{background:var(--orange)}
+
+/* Global font override for readability (avoid breaking icon fonts) */
+body :where(
+  p, span, a, li, div, button, input, textarea, select, label,
+  h1, h2, h3, h4, h5, h6, strong, em, small,
+  th, td, b, u
+) {
+  font-family: 'Poppins', sans-serif !important;
+}

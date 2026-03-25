@@ -3,8 +3,8 @@
   <a href="/" class="nav-brand">
     <div class="nav-logo-icon"><i class="fa-solid fa-bolt"></i></div>
     <div class="nav-brand-text">
-      <%= t(settings.brandLine1) %>
-      <% if (settings.brandLine2 && (t(settings.brandLine2))) { %><span><%= t(settings.brandLine2) %></span><% } %>
+      <span class="brand-main"><%= t(settings.brandLine1) %></span>
+      <% if (settings.brandLine2 && (t(settings.brandLine2))) { %><span class="brand-sub"><%= t(settings.brandLine2) %></span><% } %>
     </div>
   </a>
   <ul class="nav-links">
